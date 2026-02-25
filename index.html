@@ -2,58 +2,195 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Мои оценки альбомов</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Архив оценок альбомов</title>
     <style>
-        /* Тут мы наводим красоту */
-        body { font-family: sans-serif; background: #121212; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
-        .container { max-width: 600px; width: 100%; }
-        h1 { border-bottom: 2px solid #1db954; padding-bottom: 10px; }
-        .album-card { background: #1e1e1e; margin-bottom: 15px; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .artist { color: #b3b3b3; font-size: 0.9em; text-transform: uppercase; }
-        .title { font-size: 1.2em; font-weight: bold; margin: 5px 0; }
-        .rating { color: #1db954; cursor: pointer; font-weight: bold; display: inline-block; border-bottom: 1px dashed #1db954; }
-        .reaction-link { display: none; margin-top: 10px; background: #333; padding: 10px; border-radius: 4px; }
-        .reaction-link a { color: #ff0000; text-decoration: none; font-weight: bold; }
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --accent: #8a2be2; /* Фиолетовый для 10 */
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #eee; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 800px; width: 100%; }
+        
+        /* Калькулятор */
+        .calculator { background: var(--card); padding: 15px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #333; }
+        .calculator input { background: #000; border: 1px solid #444; color: #fff; padding: 8px; width: 70%; border-radius: 5px; }
+        .btn { background: var(--accent); border: none; color: #fff; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .btn:hover { opacity: 0.8; }
+
+        /* Фильтры */
+        .filters { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .filter-btn { background: #333; border: none; color: #ccc; padding: 10px 15px; border-radius: 20px; cursor: pointer; }
+        .filter-btn.active { background: var(--accent); color: #fff; }
+
+        /* Карточки исполнителей */
+        .artist-block { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 25px; border-left: 4px solid var(--accent); }
+        .artist-name { font-size: 1.5rem; font-weight: bold; margin-bottom: 15px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        
+        /* Список альбомов */
+        .album-item { margin-bottom: 15px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.03); }
+        .album-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+        .album-title { font-size: 1.1rem; }
+        .collab { font-size: 0.8rem; color: #888; margin-left: 5px; }
+        
+        /* Оценки и Цвета */
+        .rating-badge { padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 1rem; }
+        .old-rating { color: #666; font-size: 0.9rem; text-decoration: line-through; margin-right: 8px; }
+
+        /* Ссылки */
+        .links-area { display: none; margin-top: 10px; padding: 10px; background: #000; border-radius: 5px; }
+        .links-area a { color: #ff4444; text-decoration: none; display: block; margin: 5px 0; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>📀 Мой список альбомов</h1>
-        <div id="album-list">
-            </div>
+<div class="container">
+    <h1>📊 Мои Музыкальные Итоги</h1>
+
+    <div class="calculator">
+        <h3>🧮 Калькулятор Медианы</h3>
+        <p style="font-size: 0.8rem; color: #888;">Введи оценки треков через пробел (например: 7 8 5 10 6)</p>
+        <input type="text" id="trackScores" placeholder="Оценки через пробел...">
+        <button class="btn" onclick="calculateMedian()">Считать</button>
+        <span id="medianResult" style="margin-left: 15px; font-weight: bold; color: var(--accent);"></span>
     </div>
 
-    <script>
-        // ТВОИ ДАННЫЕ — ПРОСТО РЕДАКТИРУЙ ЭТОТ СПИСОК
-        const myAlbums = [
-            { artist: "Kanye West", title: "Donda", rating: "8/10", youtube: "https://www.youtube.com/watch?v=your_video_1" },
-            { artist: "Oxxxymiron", title: "Красота и Уродство", rating: "10/10", youtube: "https://www.youtube.com/watch?v=your_video_2" },
-            { artist: "Travis Scott", title: "Utopia", rating: "9/10", youtube: "https://www.youtube.com/watch?v=your_video_3" }
-        ];
+    <div class="filters">
+        <button class="filter-btn active" onclick="render('latest', this)">Последние</button>
+        <button class="filter-btn" onclick="render('best', this)">Топ лучших</button>
+        <button class="filter-btn" onclick="render('worst', this)">Топ худших</button>
+    </div>
 
-        // Логика отображения
-        const listContainer = document.getElementById('album-list');
+    <div id="main-content"></div>
+</div>
 
-        myAlbums.forEach((album, index) => {
-            const card = document.createElement('div');
-            card.className = 'album-card';
-            card.innerHTML = `
-                <div class="artist">${album.artist}</div>
-                <div class="title">${album.title}</div>
-                <div class="rating" onclick="toggleLink(${index})">Оценка: ${album.rating} (нажми)</div>
-                <div class="reaction-link" id="link-${index}">
-                    🎬 <a href="${album.youtube}" target="_blank">Смотреть реакцию</a>
-                </div>
-            `;
-            listContainer.appendChild(card);
+<script>
+    // БАЗА ДАННЫХ
+    const data = [
+        {
+            artist: "Лжедмитрий IV",
+            albums: [
+                { title: "Иов", ratings: [6.5, 7.1], links: ["#link1", "#link2"], collab: "" },
+                { title: "Анхель", ratings: [8.5], links: ["#link3"], collab: "" },
+                { title: "Некрооазис", ratings: [9.0], links: ["#link4"], collab: "" },
+                { title: "СИНЕРГИС", ratings: [10], links: ["#link5"], collab: "DEEP-EX-SENSE" }
+            ]
+        },
+        {
+            artist: "Oxxxymiron",
+            albums: [
+                { title: "Красота и Уродство", ratings: [9.5], links: ["#oxxxylink"], collab: "" }
+            ]
+        }
+    ];
+
+    // Генерация цвета от 0 (черный) до 10 (фиолетовый)
+    function getColor(rating) {
+        if (rating === 0) return { bg: '#000', color: '#fff', border: '1px solid #fff' };
+        
+        // Магия градиента: от черного к фиолетовому
+        const r = Math.round((138 / 10) * rating);
+        const g = Math.round((43 / 10) * rating);
+        const b = Math.round((226 / 10) * rating);
+        return { bg: `rgb(${r},${g},${b})`, color: '#fff', border: 'none' };
+    }
+
+    function render(filter = 'latest', btn = null) {
+        if(btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        const content = document.getElementById('main-content');
+        content.innerHTML = '';
+
+        // Плоский список для сортировки
+        let flatList = [];
+        data.forEach(author => {
+            author.albums.forEach(album => {
+                flatList.push({ ...album, artist: author.artist });
+            });
         });
 
-        // Функция показать/скрыть ссылку
-        function toggleLink(id) {
-            const linkDiv = document.getElementById(`link-${id}`);
-            linkDiv.style.display = (linkDiv.style.display === 'block') ? 'none' : 'block';
+        // Сортировка
+        if (filter === 'best') flatList.sort((a, b) => b.ratings.at(-1) - a.ratings.at(-1));
+        if (filter === 'worst') flatList.sort((a, b) => a.ratings.at(-1) - b.ratings.at(-1));
+        if (filter === 'latest') flatList.reverse(); // Просто в порядке добавления
+
+        // Группировка обратно по артисту (только для 'latest', в топах лучше списком)
+        if (filter === 'latest') {
+            const grouped = {};
+            flatList.forEach(item => {
+                if (!grouped[item.artist]) grouped[item.artist] = [];
+                grouped[item.artist].push(item);
+            });
+
+            for (let artist in grouped) {
+                const block = document.createElement('div');
+                block.className = 'artist-block';
+                block.innerHTML = `<div class="artist-name">${artist}</div>`;
+                
+                grouped[artist].forEach(album => block.appendChild(createAlbumNode(album)));
+                content.appendChild(block);
+            }
+        } else {
+            // Для Топов выводим просто список с именами артистов
+            flatList.forEach(album => {
+                const item = createAlbumNode(album, true);
+                content.appendChild(item);
+            });
         }
-    </script>
+    }
+
+    function createAlbumNode(album, showArtist = false) {
+        const div = document.createElement('div');
+        div.className = 'album-item';
+        
+        const lastRating = album.ratings.at(-1);
+        const style = getColor(lastRating);
+        const oldRatingsHtml = album.ratings.slice(0, -1).map(r => `<span class="old-rating">${r}</span>`).join('');
+        
+        div.innerHTML = `
+            <div class="album-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
+                <div class="album-title">
+                    ${showArtist ? `<strong>${album.artist}: </strong>` : ''}
+                    ${album.title} ${album.collab ? `<span class="collab">feat. ${album.collab}</span>` : ''}
+                </div>
+                <div>
+                    ${oldRatingsHtml}
+                    <span class="rating-badge" style="background:${style.bg}; color:${style.color}; border:${style.border || 'none'}">
+                        ${lastRating}
+                    </span>
+                </div>
+            </div>
+            <div class="links-area">
+                ${album.links.map((link, i) => `<a href="${link}" target="_blank">🎬 Смотреть реакцию #${i+1}</a>`).join('')}
+            </div>
+        `;
+        return div;
+    }
+
+    // Калькулятор медианы
+    function calculateMedian() {
+        const input = document.getElementById('trackScores').value;
+        const numbers = input.split(/\s+/).map(Number).filter(n => !isNaN(n)).sort((a, b) => a - b);
+        
+        if (numbers.length === 0) return;
+
+        let median;
+        const mid = Math.floor(numbers.length / 2);
+        if (numbers.length % 2 === 0) {
+            median = (numbers[mid - 1] + numbers[mid]) / 2;
+        } else {
+            median = numbers[mid];
+        }
+        document.getElementById('medianResult').innerText = "Медиана: " + median.toFixed(2);
+    }
+
+    // Первый запуск
+    render();
+</script>
+
 </body>
 </html>
