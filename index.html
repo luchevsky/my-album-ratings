@@ -3,57 +3,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Архив оценок альбомов</title>
+    <title>ЛЕГЕНДАРНЫЙ СПИСОК ЛУЧШИХ АЛЬБОМОВ ЛУЧЕВСКОГО</title>
     <style>
         :root {
-            --bg: #0f0f0f;
-            --card: #1a1a1a;
-            --accent: #8a2be2; /* Фиолетовый для 10 */
+            --bg: #0a0a0c;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+            --text: #ffffff;
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: #eee; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
-        .container { max-width: 800px; width: 100%; }
-        
-        /* Калькулятор */
-        .calculator { background: var(--card); padding: 15px; border-radius: 10px; margin-bottom: 30px; border: 1px solid #333; }
-        .calculator input { background: #000; border: 1px solid #444; color: #fff; padding: 8px; width: 70%; border-radius: 5px; }
-        .btn { background: var(--accent); border: none; color: #fff; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
-        .btn:hover { opacity: 0.8; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            background-image: radial-gradient(circle at 50% -20%, #2b1055 0%, #0a0a0c 80%);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container { max-width: 900px; width: 100%; }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            background: linear-gradient(to right, #fff, #8a2be2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Поиск */
+        .search-container { position: relative; margin-bottom: 20px; }
+        #search {
+            width: 100%;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--glass);
+            color: white;
+            font-size: 1rem;
+            backdrop-filter: blur(10px);
+            box-sizing: border-box;
+        }
+        .suggestions {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 0 0 12px 12px;
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+        .suggestion-item { padding: 10px; cursor: pointer; border-bottom: 1px solid #222; }
+        .suggestion-item:hover { background: #333; }
 
         /* Фильтры */
-        .filters { margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
-        .filter-btn { background: #333; border: none; color: #ccc; padding: 10px 15px; border-radius: 20px; cursor: pointer; }
-        .filter-btn.active { background: var(--accent); color: #fff; }
+        .filters { display: flex; gap: 10px; margin-bottom: 30px; justify-content: center; }
+        .filter-btn {
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: #ccc;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .filter-btn.active { background: #8a2be2; color: white; border-color: #8a2be2; }
 
-        /* Карточки исполнителей */
-        .artist-block { background: var(--card); border-radius: 12px; padding: 20px; margin-bottom: 25px; border-left: 4px solid var(--accent); }
-        .artist-name { font-size: 1.5rem; font-weight: bold; margin-bottom: 15px; color: #fff; border-bottom: 1px solid #333; padding-bottom: 5px; }
-        
-        /* Список альбомов */
-        .album-item { margin-bottom: 15px; padding: 10px; border-radius: 8px; background: rgba(255,255,255,0.03); }
-        .album-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .album-title { font-size: 1.1rem; }
-        .collab { font-size: 0.8rem; color: #888; margin-left: 5px; }
-        
-        /* Оценки и Цвета */
-        .rating-badge { padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 1rem; }
-        .old-rating { color: #666; font-size: 0.9rem; text-decoration: line-through; margin-right: 8px; }
+        /* Карточка артиста */
+        .artist-block {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        .artist-name { font-size: 1.8rem; font-weight: 800; margin-bottom: 20px; color: #fff; }
 
-        /* Ссылки */
-        .links-area { display: none; margin-top: 10px; padding: 10px; background: #000; border-radius: 5px; }
-        .links-area a { color: #ff4444; text-decoration: none; display: block; margin: 5px 0; font-size: 0.9rem; }
+        /* Альбом */
+        .album-item {
+            display: flex;
+            gap: 20px;
+            background: rgba(0,0,0,0.2);
+            margin-bottom: 15px;
+            padding: 15px;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+        .album-item:hover { transform: translateY(-3px); background: rgba(255,255,255,0.03); }
+
+        .album-cover {
+            width: 100px; height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+            background: #222;
+            flex-shrink: 0;
+        }
+
+        .album-info { flex-grow: 1; }
+        .album-title { font-size: 1.2rem; font-weight: bold; margin-bottom: 5px; }
+        .collab { color: #8a2be2; font-size: 0.9rem; }
+
+        .rating-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-weight: 900;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        .links-area { display: none; margin-top: 10px; padding: 10px; background: rgba(0,0,0,0.3); border-radius: 10px; }
+        .links-area a { color: #00ccff; text-decoration: none; display: block; margin: 5px 0; }
+
+        /* Плавающая кнопка Калькулятора */
+        #calc-toggle {
+            position: fixed; bottom: 20px; right: 20px;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: #8a2be2;
+            border: none; color: white;
+            font-size: 1.5rem; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.4);
+            z-index: 1000;
+        }
+
+        /* Модалка калькулятора */
+        .modal {
+            display: none;
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #1a1a1c;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #8a2be2;
+            z-index: 1001;
+            width: 90%; max-width: 400px;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+        }
+        .modal-overlay {
+            display: none;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); z-index: 1000;
+        }
+        .modal input { width: 100%; padding: 10px; background: #000; border: 1px solid #333; color: white; border-radius: 8px; box-sizing: border-box; }
+
+        @media (max-width: 600px) {
+            .album-item { flex-direction: column; align-items: center; text-align: center; }
+            .album-cover { width: 150px; height: 150px; }
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>📊 Мои Музыкальные Итоги</h1>
+    <h1>ЛЕГЕНДАРНЫЙ СПИСОК ЛУЧШИХ АЛЬБОМОВ ЛУЧЕВСКОГО</h1>
 
-    <div class="calculator">
-        <h3>🧮 Калькулятор Медианы</h3>
-        <p style="font-size: 0.8rem; color: #888;">Введи оценки треков через пробел (например: 7 8 5 10 6)</p>
-        <input type="text" id="trackScores" placeholder="Оценки через пробел...">
-        <button class="btn" onclick="calculateMedian()">Считать</button>
-        <span id="medianResult" style="margin-left: 15px; font-weight: bold; color: var(--accent);"></span>
+    <div class="search-container">
+        <input type="text" id="search" placeholder="Начни писать имя исполнителя..." oninput="handleSearch()">
+        <div id="suggestions" class="suggestions"></div>
     </div>
 
     <div class="filters">
@@ -65,38 +182,63 @@
     <div id="main-content"></div>
 </div>
 
+<button id="calc-toggle" onclick="toggleModal()">∑</button>
+<div class="modal-overlay" id="overlay" onclick="toggleModal()"></div>
+<div class="modal" id="modal">
+    <h3>Медиана оценок</h3>
+    <input type="text" id="trackScores" placeholder="Оценки треков через пробел...">
+    <div id="medianResult" style="margin: 15px 0; font-weight: bold; color: #8a2be2;"></div>
+    <button class="filter-btn" style="width: 100%; background: #8a2be2; color: white;" onclick="calculateMedian()">Посчитать</button>
+</div>
+
 <script>
-    // БАЗА ДАННЫХ
+    // ТВОЯ БАЗА ДАННЫХ
     const data = [
         {
             artist: "Лжедмитрий IV",
             albums: [
-                { title: "Иов", ratings: [6.5, 7.1], links: ["#link1", "#link2"], collab: "" },
-                { title: "Анхель", ratings: [8.5], links: ["#link3"], collab: "" },
-                { title: "Некрооазис", ratings: [9.0], links: ["#link4"], collab: "" },
-                { title: "СИНЕРГИС", ratings: [10], links: ["#link5"], collab: "DEEP-EX-SENSE" }
+                { 
+                    title: "Иов", 
+                    ratings: [6.5, 7.1], 
+                    links: ["https://youtube.com/watch1", "https://youtube.com/watch2"], 
+                    collab: "",
+                    cover: "https://i.scdn.co/image/ab67616d0000b2734e548545e143004a8416d56f" // Пример URL
+                },
+                { 
+                    title: "СИНЕРГИС", 
+                    ratings: [10], 
+                    links: ["#"], 
+                    collab: "DEEP-EX-SENSE",
+                    cover: "https://i.scdn.co/image/ab67616d0000b273e970220d36743b179047b19b" 
+                }
             ]
         },
         {
             artist: "Oxxxymiron",
             albums: [
-                { title: "Красота и Уродство", ratings: [9.5], links: ["#oxxxylink"], collab: "" }
+                { 
+                    title: "Красота и Уродство", 
+                    ratings: [9.5], 
+                    links: ["#"], 
+                    collab: "",
+                    cover: "https://upload.wikimedia.org/wikipedia/ru/2/23/Beauty_and_Ugliness_cover.jpg"
+                }
             ]
         }
     ];
 
-    // Генерация цвета от 0 (черный) до 10 (фиолетовый)
-    function getColor(rating) {
-        if (rating === 0) return { bg: '#000', color: '#fff', border: '1px solid #fff' };
-        
-        // Магия градиента: от черного к фиолетовому
-        const r = Math.round((138 / 10) * rating);
-        const g = Math.round((43 / 10) * rating);
-        const b = Math.round((226 / 10) * rating);
-        return { bg: `rgb(${r},${g},${b})`, color: '#fff', border: 'none' };
+    // Функция выбора цвета по твоей шкале
+    function getRatingStyle(r) {
+        if (r >= 10) return { bg: '#8a2be2', color: '#fff' }; // Фиолетовый
+        if (r >= 9)  return { bg: '#2ecc71', color: '#fff' }; // Зеленый
+        if (r >= 5)  return { bg: '#3498db', color: '#fff' }; // Синий
+        if (r >= 3)  return { bg: '#1abc9c', color: '#fff' }; // Голубой
+        if (r >= 1)  return { bg: '#e74c3c', color: '#fff' }; // Красный
+        if (r === 0) return { bg: '#000', color: '#fff', border: '1px solid #fff' };
+        return { bg: '#444', color: '#fff' };
     }
 
-    function render(filter = 'latest', btn = null) {
+    function render(filter = 'latest', btn = null, searchText = '') {
         if(btn) {
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
@@ -105,92 +247,102 @@
         const content = document.getElementById('main-content');
         content.innerHTML = '';
 
-        // Плоский список для сортировки
         let flatList = [];
         data.forEach(author => {
             author.albums.forEach(album => {
-                flatList.push({ ...album, artist: author.artist });
+                if (author.artist.toLowerCase().includes(searchText.toLowerCase())) {
+                    flatList.push({ ...album, artist: author.artist });
+                }
             });
         });
 
-        // Сортировка
         if (filter === 'best') flatList.sort((a, b) => b.ratings.at(-1) - a.ratings.at(-1));
         if (filter === 'worst') flatList.sort((a, b) => a.ratings.at(-1) - b.ratings.at(-1));
-        if (filter === 'latest') flatList.reverse(); // Просто в порядке добавления
+        if (filter === 'latest') flatList.reverse();
 
-        // Группировка обратно по артисту (только для 'latest', в топах лучше списком)
-        if (filter === 'latest') {
-            const grouped = {};
-            flatList.forEach(item => {
-                if (!grouped[item.artist]) grouped[item.artist] = [];
-                grouped[item.artist].push(item);
-            });
+        const grouped = {};
+        flatList.forEach(item => {
+            if (!grouped[item.artist]) grouped[item.artist] = [];
+            grouped[item.artist].push(item);
+        });
 
-            for (let artist in grouped) {
-                const block = document.createElement('div');
-                block.className = 'artist-block';
-                block.innerHTML = `<div class="artist-name">${artist}</div>`;
+        for (let artist in grouped) {
+            const block = document.createElement('div');
+            block.className = 'artist-block';
+            block.innerHTML = `<div class="artist-name">${artist}</div>`;
+            grouped[artist].forEach(album => {
+                const lastR = album.ratings.at(-1);
+                const st = getRatingStyle(lastR);
+                const oldR = album.ratings.slice(0, -1).map(r => `<span style="text-decoration:line-through; color:#666; margin-right:5px">${r}</span>`).join('');
                 
-                grouped[artist].forEach(album => block.appendChild(createAlbumNode(album)));
-                content.appendChild(block);
-            }
-        } else {
-            // Для Топов выводим просто список с именами артистов
-            flatList.forEach(album => {
-                const item = createAlbumNode(album, true);
-                content.appendChild(item);
+                const albumDiv = document.createElement('div');
+                albumDiv.className = 'album-item';
+                albumDiv.innerHTML = `
+                    <img src="${album.cover || 'https://via.placeholder.com/150'}" class="album-cover" alt="cover">
+                    <div class="album-info">
+                        <div class="album-title">${album.title} ${album.collab ? `<span class="collab">feat. ${album.collab}</span>` : ''}</div>
+                        <div style="font-size: 0.9rem; color: #888;">${oldR}</div>
+                        <div class="rating-badge" style="background:${st.bg}; color:${st.color}; border:${st.border||'none'}" onclick="toggleLinks(this)">
+                            Оценка: ${lastR}
+                        </div>
+                        <div class="links-area">
+                            ${album.links.map((l, i) => `<a href="${l}" target="_blank">▶ Реакция #${i+1}</a>`).join('')}
+                        </div>
+                    </div>
+                `;
+                block.appendChild(albumDiv);
             });
+            content.appendChild(block);
         }
     }
 
-    function createAlbumNode(album, showArtist = false) {
-        const div = document.createElement('div');
-        div.className = 'album-item';
+    // Поиск
+    function handleSearch() {
+        const val = document.getElementById('search').value;
+        const suggestions = document.getElementById('suggestions');
         
-        const lastRating = album.ratings.at(-1);
-        const style = getColor(lastRating);
-        const oldRatingsHtml = album.ratings.slice(0, -1).map(r => `<span class="old-rating">${r}</span>`).join('');
-        
-        div.innerHTML = `
-            <div class="album-header" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block'">
-                <div class="album-title">
-                    ${showArtist ? `<strong>${album.artist}: </strong>` : ''}
-                    ${album.title} ${album.collab ? `<span class="collab">feat. ${album.collab}</span>` : ''}
-                </div>
-                <div>
-                    ${oldRatingsHtml}
-                    <span class="rating-badge" style="background:${style.bg}; color:${style.color}; border:${style.border || 'none'}">
-                        ${lastRating}
-                    </span>
-                </div>
-            </div>
-            <div class="links-area">
-                ${album.links.map((link, i) => `<a href="${link}" target="_blank">🎬 Смотреть реакцию #${i+1}</a>`).join('')}
-            </div>
-        `;
-        return div;
+        if (val.length >= 2) {
+            const matches = data.filter(d => d.artist.toLowerCase().includes(val.toLowerCase()));
+            if (matches.length > 0) {
+                suggestions.style.display = 'block';
+                suggestions.innerHTML = matches.map(m => `<div class="suggestion-item" onclick="selectArtist('${m.artist}')">${m.artist}</div>`).join('');
+            }
+        } else {
+            suggestions.style.display = 'none';
+        }
+        render('latest', null, val);
     }
 
-    // Калькулятор медианы
+    function selectArtist(name) {
+        document.getElementById('search').value = name;
+        document.getElementById('suggestions').style.display = 'none';
+        render('latest', null, name);
+    }
+
+    function toggleLinks(el) {
+        const area = el.nextElementSibling;
+        area.style.display = area.style.display === 'block' ? 'none' : 'block';
+    }
+
+    // Калькулятор
+    function toggleModal() {
+        const m = document.getElementById('modal');
+        const o = document.getElementById('overlay');
+        const disp = m.style.display === 'block' ? 'none' : 'block';
+        m.style.display = disp; o.style.display = disp;
+    }
+
     function calculateMedian() {
         const input = document.getElementById('trackScores').value;
         const numbers = input.split(/\s+/).map(Number).filter(n => !isNaN(n)).sort((a, b) => a - b);
-        
         if (numbers.length === 0) return;
-
         let median;
         const mid = Math.floor(numbers.length / 2);
-        if (numbers.length % 2 === 0) {
-            median = (numbers[mid - 1] + numbers[mid]) / 2;
-        } else {
-            median = numbers[mid];
-        }
-        document.getElementById('medianResult').innerText = "Медиана: " + median.toFixed(2);
+        median = numbers.length % 2 === 0 ? (numbers[mid - 1] + numbers[mid]) / 2 : numbers[mid];
+        document.getElementById('medianResult').innerText = "Результат: " + median.toFixed(2);
     }
 
-    // Первый запуск
     render();
 </script>
-
 </body>
 </html>
