@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Мои оценки альбомов</title>
+    <style>
+        /* Тут мы наводим красоту */
+        body { font-family: sans-serif; background: #121212; color: white; display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { max-width: 600px; width: 100%; }
+        h1 { border-bottom: 2px solid #1db954; padding-bottom: 10px; }
+        .album-card { background: #1e1e1e; margin-bottom: 15px; padding: 15px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .artist { color: #b3b3b3; font-size: 0.9em; text-transform: uppercase; }
+        .title { font-size: 1.2em; font-weight: bold; margin: 5px 0; }
+        .rating { color: #1db954; cursor: pointer; font-weight: bold; display: inline-block; border-bottom: 1px dashed #1db954; }
+        .reaction-link { display: none; margin-top: 10px; background: #333; padding: 10px; border-radius: 4px; }
+        .reaction-link a { color: #ff0000; text-decoration: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>📀 Мой список альбомов</h1>
+        <div id="album-list">
+            </div>
+    </div>
+
+    <script>
+        // ТВОИ ДАННЫЕ — ПРОСТО РЕДАКТИРУЙ ЭТОТ СПИСОК
+        const myAlbums = [
+            { artist: "Kanye West", title: "Donda", rating: "8/10", youtube: "https://www.youtube.com/watch?v=your_video_1" },
+            { artist: "Oxxxymiron", title: "Красота и Уродство", rating: "10/10", youtube: "https://www.youtube.com/watch?v=your_video_2" },
+            { artist: "Travis Scott", title: "Utopia", rating: "9/10", youtube: "https://www.youtube.com/watch?v=your_video_3" }
+        ];
+
+        // Логика отображения
+        const listContainer = document.getElementById('album-list');
+
+        myAlbums.forEach((album, index) => {
+            const card = document.createElement('div');
+            card.className = 'album-card';
+            card.innerHTML = `
+                <div class="artist">${album.artist}</div>
+                <div class="title">${album.title}</div>
+                <div class="rating" onclick="toggleLink(${index})">Оценка: ${album.rating} (нажми)</div>
+                <div class="reaction-link" id="link-${index}">
+                    🎬 <a href="${album.youtube}" target="_blank">Смотреть реакцию</a>
+                </div>
+            `;
+            listContainer.appendChild(card);
+        });
+
+        // Функция показать/скрыть ссылку
+        function toggleLink(id) {
+            const linkDiv = document.getElementById(`link-${id}`);
+            linkDiv.style.display = (linkDiv.style.display === 'block') ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>
