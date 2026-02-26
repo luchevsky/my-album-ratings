@@ -136,6 +136,7 @@
             <button class="filter-btn active" onclick="setFilter('latest', this)">Последние</button>
             <button class="filter-btn" onclick="setFilter('best', this)">Топ Альбомов</button>
             <button class="filter-btn" onclick="setFilter('worst', this)">Антитоп Альбомов</button>
+            <button class="filter-btn" onclick="setFilter('songs', this)">Синглы</button>
             <button class="filter-btn" onclick="setFilter('artists', this)">Топ Артистов</button>
         </div>
     </div>
@@ -151,9 +152,14 @@
 </div>
 
 <script>
+    // ВАЖНО: Я добавил songs: [] всем твоим артистам. 
+    // Теперь ты можешь добавлять туда синглы в таком же формате как альбомы.
     const data = [
         {
             artist: "Лжедмитрий IV",
+            songs: [
+                { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [8], links: ["https://youtu.be/XZ2A3DBagts?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" }
+            ], 
             albums: [
                 { id: "lzhe_iov", title: "Иов (2016)", ratings: [4.7, 5.4, 6.4, 7.1], links: ["https://youtu.be/bD1DmvT61pY", "https://youtu.be/2LFURC3vSRM?list=PLv08rxZyjRIp-vCIBdI0PDjpd0WZTJHJQ", "https://youtu.be/7TFSt7k1q2k?list=PLv08rxZyjRIp-vCIBdI0PDjpd0WZTJHJQ", "https://youtu.be/jUkKxTrzzgw?list=PLv08rxZyjRIp-vCIBdI0PDjpd0WZTJHJQ"], collab: "", cover: "https://avatars.yandex.net/get-music-content/15682289/a0ffe948.a.18050595-2/m1000x1000" },
                 { id: "lzhe_anhel", title: "Анхель (2019)", ratings: [8], links: ["https://youtu.be/V2PTbK08utw?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "", cover: "https://avatars.yandex.net/get-music-content/16616584/f74d6a1b.a.7836556-3/m1000x1000" },
@@ -164,6 +170,7 @@
         },
         {
             artist: "DEEP-EX-SENSE",
+            songs: [],
             albums: [
                 { id: "deep_shog", title: "ШОГГОТ (2018)", ratings: [6.3], links: ["https://youtu.be/9DRxhgm9bdg?list=PLv08rxZyjRIogv4AJ-JSEYLkzdvLK7Xic"], collab: "", cover: "https://images.genius.com/ba90686599f583e250ee4a15fc974ccb.518x518x1.jpg" },
                 { id: "deep_shelk", title: "Мертвый шелк (2021)", ratings: [5.75], links: ["https://youtu.be/fqciSI2otbg?list=PLv08rxZyjRIogv4AJ-JSEYLkzdvLK7Xic"], collab: "", cover: "https://images.genius.com/a5d78bd6dc93f5dce3d8d962aa345f89.1000x1000x1.png" }
@@ -171,6 +178,10 @@
         },
         {
             artist: "pyrokinesis",
+            songs: [
+                // Пример добавления сингла:
+                // { id: "p_1", title: "Название трека", ratings: [8], links: ["ссылка"], collab: "", cover: "урл_обложки" }
+            ],
             albums: [
                 { id: "pyro_5", title: "5 (2015)", ratings: [5.6], links: ["https://youtu.be/X6WNECVlbeU?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/e6f31b7da33e52df92e2f6e450d4e394.1000x1000x1.png" },
                 { id: "pyro_brxrr", title: "Black Roze x Red Roze (2015)", ratings: [5, 6.7], links: ["https://youtu.be/I9Tb7EA_Vwg?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA", "https://youtu.be/Q-pRb73kTjw?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/9eba2411b2e4a8b3df25f2d6f64406a4.1000x1000x1.png" },
@@ -186,6 +197,7 @@
         },
         {
             artist: "Asper X",
+            songs: [],
             albums: [
                 { id: "asper_dtkm", title: "Для тех, кто молчит (2023)", ratings: [3.7], links: ["https://youtu.be/8Mso1I6ZFzo?list=PLv08rxZyjRIqhs1gWlJPL53v2ICw0UJ6M"], collab: "", cover: "https://images.genius.com/107c255034b8bd77ce2bda3ac07f4769.340x340x1.jpg" },
                 { id: "asper_kss", title: "Каждый справляется сам (2022)", ratings: [6], links: ["https://youtu.be/YzpknUVlWlI?list=PLv08rxZyjRIqhs1gWlJPL53v2ICw0UJ6M"], collab: "", cover: "https://images.genius.com/d94683baee8108e48c4ae8e97383e058.1000x1000x1.jpg" },
@@ -195,18 +207,21 @@
         },
         {
             artist: "RetroElektro",
+            songs: [],
             albums: [
                 { id: "retre_eva", title: "Ева (2014)", ratings: [5.8], links: ["https://youtu.be/vqt-zmXgty0?list=PLv08rxZyjRIqhs1gWlJPL53v2ICw0UJ6M"], collab: "", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/a8/4b/e0/a84be0b0-05a5-f249-8622-a04e5e3d3324/cover.jpg/375x375bb.webp" }
             ]
         },
         {
             artist: "plagueinside",
+            songs: [],
             albums: [
                 { id: "plagin_helh", title: "ХЕЛЬХЕЙМ (2023)", ratings: [8.2], links: ["https://youtu.be/QWivOV3ktyo?list=PLv08rxZyjRIooVATlgdPWoJVyy6nZrtpl"], collab: "", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e9/97/62/e997623e-2899-02bf-caf1-a3332c6a35a7/cover.jpg/3880x3880bb.webp" }
             ]
         },
         {
             artist: "Lodoss",
+            songs: [],
             albums: [
                 { id: "lodoss_lgs", title: "Легенды северных земель (2022)", ratings: [4.8], links: ["https://youtu.be/FyId3jDsNpc?list=PLv08rxZyjRIpOIY6UReMPucNSvGH4Kj-q"], collab: "", cover: "https://images.genius.com/53f6d7a460607ee09cae46e98da3db10.1000x1000x1.jpg" },
                 { id: "lodoss_lgs2", title: "Легенды северных земель II (2025)", ratings: [6], links: ["https://youtu.be/aCDaCi0E4vs?list=PLv08rxZyjRIpOIY6UReMPucNSvGH4Kj-q"], collab: "", cover: "https://images.genius.com/b4c954088fdbff62b1c2c148f2b6f5b3.1000x1000x1.jpg" },
@@ -216,6 +231,7 @@
         },
         {
             artist: "PollmixaN",
+            songs: [],
             albums: [
                 { id: "poll_ssk", title: "Сам себе кумир (2020)", ratings: [4.7], links: ["https://youtu.be/owEflY6eK34?list=PLv08rxZyjRIoLeqN5DnRZicvIMHbbvs-p"], collab: "", cover: "https://images.genius.com/87a901826f652e371ee197015e7f8040.500x500x1.jpg" },
                 { id: "poll_csr", title: "Центр своей реальности (2020)", ratings: [3.7], links: ["https://youtu.be/dzSCsqg8S2w?list=PLv08rxZyjRIoLeqN5DnRZicvIMHbbvs-p"], collab: "", cover: "https://images.genius.com/711c23b0a9ad874e292f5d198e7ede82.500x500x1.jpg" },
@@ -229,6 +245,7 @@
         },
         {
             artist: "mzlff",
+            songs: [],
             albums: [
                 { id: "mzlff_phia", title: "PHANTASMAGORIA (2025)", ratings: [7.8], links: ["https://youtu.be/3zgsejQdYmU?list=PLv08rxZyjRIpPMSSyjij99eFGUMBjAdA8"], collab: "", cover: "https://images.genius.com/60f7a246fe79c4875a6fdee10b10a592.1000x1000x1.png" },
                 { id: "mzlff_dade", title: "светлая сторона (2024)", ratings: [6.7], links: ["https://youtu.be/4-KwStwq__k?list=PLv08rxZyjRIpPMSSyjij99eFGUMBjAdA8"], collab: "", cover: "https://images.genius.com/bcdb6d6fd2815340e491fe8bdd3f03ad.1000x1000x1.png" },
@@ -236,6 +253,7 @@
         },
         {
             artist: "Гарри Топор",
+            songs: [],
             albums: [
                 { id: "garry_chver", title: "Человек в ежовых рукавицах (2017)", ratings: [4.6], links: ["https://youtu.be/lnA7eCFN4sY?list=PLv08rxZyjRIqX5Rc9Ff0984mFL_TQP-q9"], collab: "", cover: "https://images.genius.com/c6b04d752a3aa684106ee6441529054f.1000x1000x1.jpg" },
                 { id: "garry_ls", title: "Лики смерти (2016)", ratings: [3.7], links: ["https://youtu.be/mS9lYUWOeAU?list=PLv08rxZyjRIqX5Rc9Ff0984mFL_TQP-q9"], collab: "", cover: "https://images.genius.com/541fedeca4c4264c40bea497a8b2e2cc.1000x1000x1.png" },
@@ -246,12 +264,12 @@
         },
         {
             artist: "ATL",
+            songs: [],
             albums: [
                 { id: "atl_ra", title: "Радио Апокалипсис (2021)", ratings: [4.3], links: ["https://youtu.be/-K2R31JtdBY?list=PLv08rxZyjRIrGUEe2rk2ql9SEiQWLrsH2"], collab: "", cover: "https://images.genius.com/253f754d477ba6e7bc07548b72e24d27.1000x1000x1.png" },
                 { id: "atl_limb", title: "Лимб (2017)", ratings: [4.8], links: ["https://youtu.be/YOYMsDkRExQ?list=PLv08rxZyjRIrGUEe2rk2ql9SEiQWLrsH2"], collab: "", cover: "https://images.genius.com/b1ccc467fb20d6af0d3055789419134f.1000x1000x1.png" },
             ]
-        },
-                
+        }
     ];
 
     let currentFilter = 'latest';
@@ -279,19 +297,25 @@
         const query = document.getElementById('search').value.toLowerCase();
         container.innerHTML = '';
 
-        let albums = [];
-        data.forEach(art => art.albums.forEach(alb => albums.push({...alb, mainArtist: art.artist})));
+        if (currentFilter === 'artists') {
+            renderArtists(container, query);
+            return;
+        }
 
-        let filtered = albums.filter(a => a.mainArtist.toLowerCase().includes(query) || a.title.toLowerCase().includes(query));
+        // Собираем элементы в зависимости от фильтра
+        let items = [];
+        if (currentFilter === 'songs') {
+            data.forEach(art => art.songs.forEach(s => items.push({...s, mainArtist: art.artist, type: 'song'})));
+        } else {
+            // Для всех остальных фильтров (latest, best, worst) берем альбомы
+            data.forEach(art => art.albums.forEach(alb => items.push({...alb, mainArtist: art.artist, type: 'album'})));
+        }
+
+        let filtered = items.filter(a => a.mainArtist.toLowerCase().includes(query) || a.title.toLowerCase().includes(query));
 
         if (currentFilter === 'best') filtered.sort((a,b) => b.ratings.at(-1) - a.ratings.at(-1));
         if (currentFilter === 'worst') filtered.sort((a,b) => a.ratings.at(-1) - b.ratings.at(-1));
         if (currentFilter === 'latest') filtered.reverse();
-
-        if (currentFilter === 'artists' && !query) {
-            renderArtists(container);
-            return;
-        }
 
         filtered.forEach((alb, index) => {
             const div = document.createElement('div');
@@ -305,7 +329,7 @@
                     <div class="rating-wrapper">
                         <button class="rating-badge ${isLast ? '' : 'old'}" 
                                 style="background:${rColor.c}" 
-                                onclick="toggleDrawer('${alb.id}', ${i})">${r}</button>
+                                onclick="toggleDrawer('${alb.id}', ${i}, '${alb.type}')">${r}</button>
                         ${isLast && rColor.i ? `<span class="status-icon">${rColor.i}</span>` : ''}
                     </div>
                 `;
@@ -315,7 +339,7 @@
                 <img src="${alb.cover}" class="album-cover">
                 <div class="album-info">
                     <div class="artist-name">${alb.mainArtist} ${alb.collab ? 'x ' + alb.collab : ''}</div>
-                    <div class="album-title">${alb.title}</div>
+                    <div class="album-title">${alb.title} ${alb.type === 'song' ? '<small style="opacity:0.5">(S)</small>' : ''}</div>
                     <div class="rating-row">${ratingsHtml}</div>
                     <div id="drawer-${alb.id}" class="link-drawer"></div>
                 </div>
@@ -324,11 +348,18 @@
         });
     }
 
-    function renderArtists(container) {
+    function renderArtists(container, query) {
         let stats = data.map(art => {
-            let sum = art.albums.reduce((acc, alb) => acc + alb.ratings.at(-1), 0);
-            return { name: art.artist, avg: (sum / art.albums.length).toFixed(2) };
-        }).sort((a,b) => b.avg - a.avg);
+            // Считаем среднее по всем работам (альбомы + синглы)
+            const allWorks = [...(art.albums || []), ...(art.songs || [])];
+            let sum = allWorks.reduce((acc, work) => acc + work.ratings.at(-1), 0);
+            return { 
+                name: art.artist, 
+                avg: (allWorks.length ? (sum / allWorks.length).toFixed(2) : 0) 
+            };
+        })
+        .filter(s => s.name.toLowerCase().includes(query))
+        .sort((a,b) => b.avg - a.avg);
 
         stats.forEach((s, index) => {
             const div = document.createElement('div');
@@ -342,16 +373,20 @@
         });
     }
 
-    function toggleDrawer(id, index) {
+    function toggleDrawer(id, index, type) {
         const drawer = document.getElementById(`drawer-${id}`);
-        let allAlbs = [];
-        data.forEach(art => art.albums.forEach(a => allAlbs.push(a)));
-        const alb = allAlbs.find(a => a.id === id);
+        let allItems = [];
+        data.forEach(art => {
+            art.albums.forEach(a => allItems.push({...a, type:'album'}));
+            art.songs.forEach(s => allItems.push({...s, type:'song'}));
+        });
+        
+        const item = allItems.find(a => a.id === id);
         
         if (drawer.style.display === 'block' && drawer.dataset.idx == index) {
             drawer.style.display = 'none';
         } else {
-            drawer.innerHTML = `🔗 <a href="${alb.links[index]}" target="_blank">РЕАКЦИЯ НА ${alb.ratings[index]}</a>`;
+            drawer.innerHTML = `🔗 <a href="${item.links[index]}" target="_blank">РЕАКЦИЯ НА ${item.ratings[index]}</a>`;
             drawer.style.display = 'block';
             drawer.dataset.idx = index;
         }
