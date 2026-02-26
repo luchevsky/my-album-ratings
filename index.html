@@ -53,7 +53,7 @@
         }
         .album-card:hover { border-color: #444; transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
 
-        .artist-card { cursor: pointer; flex-direction: column; }
+        .artist-card { cursor: pointer; flex-direction: column; background: var(--card); padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #222;}
 
         .album-cover { width: 120px; height: 120px; border-radius: 6px; object-fit: cover; background: #000; }
         .album-info { flex: 1; width: 100%; }
@@ -142,155 +142,140 @@
 </div>
 
 <script>
+    // ТЕПЕРЬ ОДИН ОБЩИЙ МАССИВ 'releases' ДЛЯ КАЖДОГО АРТИСТА
     const data = [
         {
             artist: "Лжедмитрий IV",
-            songs: [
-                { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" },
-                { id: "lzhe_prn", title: "Призраки настоящего (2026)", ratings: [6], links: ["https://youtu.be/p10MYKhC-hg"], collab: "DEEP-EX-SENSE x ТЕППО", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b8/58/e2/b858e2af-73d2-96f1-0583-c7e68ed35801/0.jpg/800x800cc.jpg" },
-                { id: "lzhe_krbr", title: "Кровный брат (2020)", ratings: [10], links: ["https://youtu.be/XFwQ77hOsUk"], collab: "ТЕППО", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/32/e1/c5/32e1c5cd-b9c8-b9fa-d2da-5ce4f73590fc/cover.jpg/600x600bf-60.jpg" },
-                { id: "lzhe_satn", title: "Сатанизм (2020)", ratings: [5], links: ["https://youtu.be/i7lxYSMyt94"], collab: "Lawanda x Ра-Мир", cover: "https://sun9-54.userapi.com/s/v1/ig2/67ehL_p0vuc-6YJqhmCoDyjyFsn__L69b87jqTZX8SrfYcpGs-c0kOOhZF3pXMUbVHIbD7tmZxHfPPYSdCnBfbGg.jpg?quality=96&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&from=bu&cs=640x0" },
-                { id: "lzhe_bers", title: "БЕРСЕРК (2022)", ratings: [10], links: ["https://youtu.be/7cqKyYxZtlI"], collab: "ТЕППО", cover: "https://sun9-11.userapi.com/impg/EUm-qOjIPtO2FKr7Qfrwq0-pTe5sCLmLyykLKA/g9hqdQV6GZc.jpg?size=2560x2560&quality=95&sign=ad0e88aa8baa892e18741af17b3f8350&type=album" },
-                { id: "lzhe_gz", title: "Гармония Зла (2022)", ratings: [8], links: ["https://youtu.be/4GksSoN5AQw"], collab: "", cover: "https://images.genius.com/695a22d020a3c7328b0260b9c6532896.1000x1000x1.jpg" },
-                { id: "lzhe_uq", title: "Й (2019)", ratings: [8], links: ["https://youtu.be/2xm0ahxcFLc"], collab: "Steve Insane", cover: "https://images.genius.com/1815925da7261753eba80a86416b24a3.300x332x1.jpg" },
-                { id: "lzhe_svyat", title: "Святость (2020)", ratings: [7], links: ["https://youtu.be/skoLZBa8HKU"], collab: "", cover: "https://images.genius.com/abca2467985145a4f0b47330949a25e0.1000x1000x1.jpg" },
-                { id: "lzhe_surr", title: "Суррогат (2020)", ratings: [8.5], links: ["https://youtu.be/wCEbIrC4q4c"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5287e7ab9f949fd0c7a921a9ea0f2fa0/500x500.jpg" },
-                { id: "lzhe_bli", title: "Блиц (2025)", ratings: [4], links: ["https://youtu.be/q4r__0qFs_Y"], collab: "Пиэм x DEEP-EX-SENSE x Resonance x ШУММ", cover: "https://avatars.yandex.net/get-music-content/15018579/96b95ffd.a.37270368-1/300x300" },
-            ], 
-            albums: [
-                { id: "lzhe_iov", title: "Иов (2016)", ratings: [4.7, 5.4, 6.4, 7.1], links: ["https://youtu.be/bD1DmvT61pY", "https://youtu.be/2LFURC3vSRM", "https://youtu.be/7TFSt7k1q2k", "https://youtu.be/jUkKxTrzzgw"], collab: "", cover: "https://avatars.yandex.net/get-music-content/15682289/a0ffe948.a.18050595-2/m1000x1000" },
-                { id: "lzhe_anhel", title: "Анхель (2019)", ratings: [8], links: ["https://youtu.be/V2PTbK08utw"], collab: "", cover: "https://avatars.yandex.net/get-music-content/16616584/f74d6a1b.a.7836556-3/m1000x1000" },
-                { id: "lzhe_nesis", title: "Некрооазис (2021)", ratings: [6.7, 7.1], links: ["https://youtu.be/APHIeSHKEuc", "https://youtu.be/TAjNNpI0rCM"], collab: "", cover: "https://images.genius.com/586ecfdc9d06dd2f6ab58594ab181847.1000x1000x1.jpg" },
-                { id: "lzhe_sgvm", title: "Тёмный театр С.Г.В.М. (2022)", ratings: [4.7, 6.5], links: ["https://youtu.be/RLqzZhg8Apc", "https://youtu.be/QnqKbqF6R0E"], collab: "", cover: "https://images.genius.com/b5bbbef8301c1de36e893e94224c34f8.1000x1000x1.jpg" },
-                { id: "lzhe_sin", title: "СИНЕРГИС (2024)", ratings: [9.4], links: ["https://youtu.be/dhAKNmgNSUY"], collab: "DEEP-EX-SENSE", cover: "https://avatars.yandex.net/get-music-content/9867886/fac6f504.a.29560268-1/m1000x1000" }
+            releases: [
+                { type: "album", id: "lzhe_iov", title: "Иов (2016)", ratings: [4.7, 5.4, 6.4, 7.1], links: ["https://youtu.be/bD1DmvT61pY", "https://youtu.be/2LFURC3vSRM", "https://youtu.be/7TFSt7k1q2k", "https://youtu.be/jUkKxTrzzgw"], collab: "", cover: "https://avatars.yandex.net/get-music-content/15682289/a0ffe948.a.18050595-2/m1000x1000" },
+                { type: "song", id: "lzhe_uq", title: "Й (2019)", ratings: [8], links: ["https://youtu.be/2xm0ahxcFLc"], collab: "Steve Insane", cover: "https://images.genius.com/1815925da7261753eba80a86416b24a3.300x332x1.jpg" },
+                { type: "album", id: "lzhe_anhel", title: "Анхель (2019)", ratings: [8], links: ["https://youtu.be/V2PTbK08utw"], collab: "", cover: "https://avatars.yandex.net/get-music-content/16616584/f74d6a1b.a.7836556-3/m1000x1000" },
+                { type: "song", id: "lzhe_krbr", title: "Кровный брат (2020)", ratings: [10], links: ["https://youtu.be/XFwQ77hOsUk"], collab: "ТЕППО", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/32/e1/c5/32e1c5cd-b9c8-b9fa-d2da-5ce4f73590fc/cover.jpg/600x600bf-60.jpg" },
+                { type: "song", id: "lzhe_satn", title: "Сатанизм (2020)", ratings: [5], links: ["https://youtu.be/i7lxYSMyt94"], collab: "Lawanda x Ра-Мир", cover: "https://sun9-54.userapi.com/s/v1/ig2/67ehL_p0vuc-6YJqhmCoDyjyFsn__L69b87jqTZX8SrfYcpGs-c0kOOhZF3pXMUbVHIbD7tmZxHfPPYSdCnBfbGg.jpg?quality=96&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&from=bu&cs=640x0" },
+                { type: "song", id: "lzhe_svyat", title: "Святость (2020)", ratings: [7], links: ["https://youtu.be/skoLZBa8HKU"], collab: "", cover: "https://images.genius.com/abca2467985145a4f0b47330949a25e0.1000x1000x1.jpg" },
+                { type: "song", id: "lzhe_surr", title: "Суррогат (2020)", ratings: [8.5], links: ["https://youtu.be/wCEbIrC4q4c"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5287e7ab9f949fd0c7a921a9ea0f2fa0/500x500.jpg" },
+                { type: "album", id: "lzhe_nesis", title: "Некрооазис (2021)", ratings: [6.7, 7.1], links: ["https://youtu.be/APHIeSHKEuc", "https://youtu.be/TAjNNpI0rCM"], collab: "", cover: "https://images.genius.com/586ecfdc9d06dd2f6ab58594ab181847.1000x1000x1.jpg" },
+                { type: "song", id: "lzhe_bers", title: "БЕРСЕРК (2022)", ratings: [10], links: ["https://youtu.be/7cqKyYxZtlI"], collab: "ТЕППО", cover: "https://sun9-11.userapi.com/impg/EUm-qOjIPtO2FKr7Qfrwq0-pTe5sCLmLyykLKA/g9hqdQV6GZc.jpg?size=2560x2560&quality=95&sign=ad0e88aa8baa892e18741af17b3f8350&type=album" },
+                { type: "song", id: "lzhe_gz", title: "Гармония Зла (2022)", ratings: [8], links: ["https://youtu.be/4GksSoN5AQw"], collab: "", cover: "https://images.genius.com/695a22d020a3c7328b0260b9c6532896.1000x1000x1.jpg" },
+                { type: "album", id: "lzhe_sgvm", title: "Тёмный театр С.Г.В.М. (2022)", ratings: [4.7, 6.5], links: ["https://youtu.be/RLqzZhg8Apc", "https://youtu.be/QnqKbqF6R0E"], collab: "", cover: "https://images.genius.com/b5bbbef8301c1de36e893e94224c34f8.1000x1000x1.jpg" },
+                { type: "album", id: "lzhe_sin", title: "СИНЕРГИС (2024)", ratings: [9.4], links: ["https://youtu.be/dhAKNmgNSUY"], collab: "DEEP-EX-SENSE", cover: "https://avatars.yandex.net/get-music-content/9867886/fac6f504.a.29560268-1/m1000x1000" },
+                { type: "song", id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" },
+                { type: "song", id: "lzhe_bli", title: "Блиц (2025)", ratings: [4], links: ["https://youtu.be/q4r__0qFs_Y"], collab: "Пиэм x DEEP-EX-SENSE x Resonance x ШУММ", cover: "https://avatars.yandex.net/get-music-content/15018579/96b95ffd.a.37270368-1/300x300" },
+                { type: "song", id: "lzhe_prn", title: "Призраки настоящего (2026)", ratings: [6], links: ["https://youtu.be/p10MYKhC-hg"], collab: "DEEP-EX-SENSE x ТЕППО", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b8/58/e2/b858e2af-73d2-96f1-0583-c7e68ed35801/0.jpg/800x800cc.jpg" },
             ]
         },
         {
             artist: "DEEP-EX-SENSE",
-            songs: [
-                { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts"], collab: "Лжедмитрий IV", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" },
-                { id: "deep_mob", title: "Морская болезнь (2025)", ratings: [7], links: ["https://youtu.be/T_khuO7f_Lg"], collab: "ATIRA", cover: "https://images.genius.com/3afcd4c29c345b5d9990a638259b2741.604x604x1.jpg" },
-                { id: "deep_c17", title: "City 17 (2017)", ratings: [5], links: ["https://youtu.be/GSmubVFoYZk"], collab: "", cover: "https://images.genius.com/c2b9d8be7cbaeb77a5b574fb34afa63b.1000x1000x1.jpg" },
-                { id: "deep_necr", title: "Некроморф (2019)", ratings: [8], links: ["https://youtu.be/VN_WzzdT8XE"], collab: "", cover: "https://images.genius.com/96c3db9a95cbd4deaac8350f09c21dfb.1000x1000x1.jpg" },
-                { id: "deep_ten", title: "Тень (2025)", ratings: [3], links: ["https://youtu.be/k6wgr_tv7aM"], collab: "Rosenblatt", cover: "https://images.genius.com/63ee70aa7438c191dd915db80afcee00.1000x1000x1.jpg" },
-                { id: "deep_zvezd", title: "Звездопад (2025)", ratings: [7], links: ["https://youtu.be/EhKiSA6IwUs"], collab: "ATIRA", cover: "https://cdn-image.zvuk.com/pic?hash=1a921239-f91e-48ff-b4b9-b99527773cb3&id=42503116&size=large&type=release" },
-                { id: "deep_chtr", title: "Химтрейл (2020)", ratings: [5], links: ["https://youtu.be/XWEUPq6xQ2k"], collab: "ШУММ", cover: "https://cdn-images.dzcdn.net/images/cover/23e80a718ae9959512312a301add389c/0x1900-000000-80-0-0.jpg" },
-                { id: "deep_mets", title: "Метастазы (2019)", ratings: [4], links: ["https://youtu.be/S7vs9ga8SH0"], collab: "", cover: "https://images.genius.com/e0f1303230346abbe3e55aa343f2ba7c.1000x1000x1.jpg" },
-                { id: "deep_prknp", title: "Праздник к нам приходит (2018)", ratings: [5], links: ["https://youtu.be/oF22fy3vARI"], collab: "", cover: "https://images.genius.com/166bbffcd79c4ff959928de118487f3b.1000x1000x1.jpg" },
-            ],
-            albums: [
-                { id: "deep_shog", title: "ШОГГОТ (2018)", ratings: [6.3], links: ["https://youtu.be/9DRxhgm9bdg"], collab: "", cover: "https://images.genius.com/ba90686599f583e250ee4a15fc974ccb.518x518x1.jpg" },
-                { id: "deep_shelk", title: "Мертвый шелк (2021)", ratings: [5.75], links: ["https://youtu.be/fqciSI2otbg"], collab: "", cover: "https://images.genius.com/a5d78bd6dc93f5dce3d8d962aa345f89.1000x1000x1.png" }
+            releases: [
+                { type: "song", id: "deep_c17", title: "City 17 (2017)", ratings: [5], links: ["https://youtu.be/GSmubVFoYZk"], collab: "", cover: "https://images.genius.com/c2b9d8be7cbaeb77a5b574fb34afa63b.1000x1000x1.jpg" },
+                { type: "album", id: "deep_shog", title: "ШОГГОТ (2018)", ratings: [6.3], links: ["https://youtu.be/9DRxhgm9bdg"], collab: "", cover: "https://images.genius.com/ba90686599f583e250ee4a15fc974ccb.518x518x1.jpg" },
+                { type: "song", id: "deep_prknp", title: "Праздник к нам приходит (2018)", ratings: [5], links: ["https://youtu.be/oF22fy3vARI"], collab: "", cover: "https://images.genius.com/166bbffcd79c4ff959928de118487f3b.1000x1000x1.jpg" },
+                { type: "song", id: "deep_necr", title: "Некроморф (2019)", ratings: [8], links: ["https://youtu.be/VN_WzzdT8XE"], collab: "", cover: "https://images.genius.com/96c3db9a95cbd4deaac8350f09c21dfb.1000x1000x1.jpg" },
+                { type: "song", id: "deep_mets", title: "Метастазы (2019)", ratings: [4], links: ["https://youtu.be/S7vs9ga8SH0"], collab: "", cover: "https://images.genius.com/e0f1303230346abbe3e55aa343f2ba7c.1000x1000x1.jpg" },
+                { type: "song", id: "deep_chtr", title: "Химтрейл (2020)", ratings: [5], links: ["https://youtu.be/XWEUPq6xQ2k"], collab: "ШУММ", cover: "https://cdn-images.dzcdn.net/images/cover/23e80a718ae9959512312a301add389c/0x1900-000000-80-0-0.jpg" },
+                { type: "album", id: "deep_shelk", title: "Мертвый шелк (2021)", ratings: [5.75], links: ["https://youtu.be/fqciSI2otbg"], collab: "", cover: "https://images.genius.com/a5d78bd6dc93f5dce3d8d962aa345f89.1000x1000x1.png" },
+                { type: "song", id: "deep_mob", title: "Морская болезнь (2025)", ratings: [7], links: ["https://youtu.be/T_khuO7f_Lg"], collab: "ATIRA", cover: "https://images.genius.com/3afcd4c29c345b5d9990a638259b2741.604x604x1.jpg" },
+                { type: "song", id: "deep_ten", title: "Тень (2025)", ratings: [3], links: ["https://youtu.be/k6wgr_tv7aM"], collab: "Rosenblatt", cover: "https://images.genius.com/63ee70aa7438c191dd915db80afcee00.1000x1000x1.jpg" },
+                { type: "song", id: "deep_zvezd", title: "Звездопад (2025)", ratings: [7], links: ["https://youtu.be/EhKiSA6IwUs"], collab: "ATIRA", cover: "https://cdn-image.zvuk.com/pic?hash=1a921239-f91e-48ff-b4b9-b99527773cb3&id=42503116&size=large&type=release" },
             ]
         },
         {
             artist: "pyrokinesis",
-            songs: [
-                { id: "pyro_chp", title: "Чтобы помнить (2017)", ratings: [5], links: ["https://youtu.be/nQNYv-NY-HQ"], collab: "STED.D", cover: "https://tekst-pesni.online/wp-content/uploads/2020/08/chtob.jpg" },
-                { id: "pyro_herv", title: "Херувимы (2022)", ratings: [7], links: ["https://youtu.be/8OD_NfKitWg"], collab: "RAVANNA", cover: "https://s.mxmcdn.net/images-storage/albums2/8/2/4/6/0/7/62706428_350_350.jpg" },
-            ],
-            albums: [
-                { id: "pyro_5", title: "5 (2015)", ratings: [5.6], links: ["https://youtu.be/X6WNECVlbeU"], collab: "", cover: "https://images.genius.com/e6f31b7da33e52df92e2f6e450d4e394.1000x1000x1.png" },
-                { id: "pyro_brxrr", title: "Black Roze x Red Roze (2015)", ratings: [5, 6.7], links: ["https://youtu.be/I9Tb7EA_Vwg", "https://youtu.be/Q-pRb73kTjw?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/9eba2411b2e4a8b3df25f2d6f64406a4.1000x1000x1.png" },
-                { id: "pyro_btd", title: "Burn to Die (2015)", ratings: [4.1], links: ["https://youtu.be/5N2VlrMswzA"], collab: "", cover: "https://images.genius.com/c959c837de73380dd04525683ab30f35.1000x1000x1.png" },
-                { id: "pyro_ecl", title: "Eclipse (2016)", ratings: [6.2], links: ["https://youtu.be/CULI8sL8XLY"], collab: "", cover: "https://images.genius.com/e7605dd3539faa2ea9d0d8d829b07735.1000x1000x1.png" },
-                { id: "pyro_tve", title: "ТЕРНОВЫЙ ВЕНЕЦ ЭВОЛЮЦИИ (2017)", ratings: [6, 5.8], links: ["https://youtu.be/j6IVX7Zx_Sw", "https://youtu.be/mgCxSPinyrY?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/b396008cb86c092ca9fc409ad9307863.1000x1000x1.png" },
-                { id: "pyro_kdpr", title: "Корми демонов по расписанию (2018)", ratings: [8.25, 8.4], links: ["https://youtu.be/JZi6oYlscEc", "https://youtu.be/Z8IQ4nmmoJE?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/1dd42cbd4a442b1236065ac0b22b0cda.1000x1000x1.png" },
-                { id: "pyro_mmp", title: "МОЯ МИЛАЯ ПУСТОТА (2019)", ratings: [6.6], links: ["https://youtu.be/fjROc8Ef3UM"], collab: "", cover: "https://images.genius.com/6d07810c6711d66da4b7ac68e2c1da67.1000x1000x1.png" },
-                { id: "pyro_pcnf", title: "Питер, чай, не Франция (2020)", ratings: [6.5, 7.1], links: ["https://youtu.be/h0D79fQfrzw", "https://youtu.be/KnLGgMUGsMQ?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/835ea898013183c36b2a20d161bca86b.1000x1000x1.png" },
-                { id: "pyro_gtm", title: "геометрия тьмы (2022)", ratings: [6.6], links: ["https://youtu.be/7ZUDT7xQdmg"], collab: "", cover: "https://images.genius.com/dc26a714bcbf0cf4cc9099d7b8154c0f.1000x1000x1.png" },
-                { id: "pyro_mmc", title: "mea maxima culpa (2025)", ratings: [7.4], links: ["https://youtu.be/rmMZLAfSr3g"], collab: "", cover: "https://images.genius.com/ebb5dc119cce603576dbfd5b89023d67.1000x1000x1.png" },
-                { id: "pyro_ff14", title: "FINAL FANTASY (2018-...)", ratings: [7.4], links: ["https://youtu.be/ubTbyXjkLw8"], collab: "", cover: "https://images.genius.com/18237a8f37d26adf219a9702a0eb281e.1000x1000x1.jpg" },
+            releases: [
+                { type: "album", id: "pyro_5", title: "5 (2015)", ratings: [5.6], links: ["https://youtu.be/X6WNECVlbeU"], collab: "", cover: "https://images.genius.com/e6f31b7da33e52df92e2f6e450d4e394.1000x1000x1.png" },
+                { type: "album", id: "pyro_brxrr", title: "Black Roze x Red Roze (2015)", ratings: [5, 6.7], links: ["https://youtu.be/I9Tb7EA_Vwg", "https://youtu.be/Q-pRb73kTjw?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/9eba2411b2e4a8b3df25f2d6f64406a4.1000x1000x1.png" },
+                { type: "album", id: "pyro_btd", title: "Burn to Die (2015)", ratings: [4.1], links: ["https://youtu.be/5N2VlrMswzA"], collab: "", cover: "https://images.genius.com/c959c837de73380dd04525683ab30f35.1000x1000x1.png" },
+                { type: "album", id: "pyro_ecl", title: "Eclipse (2016)", ratings: [6.2], links: ["https://youtu.be/CULI8sL8XLY"], collab: "", cover: "https://images.genius.com/e7605dd3539faa2ea9d0d8d829b07735.1000x1000x1.png" },
+                { type: "song", id: "pyro_chp", title: "Чтобы помнить (2017)", ratings: [5], links: ["https://youtu.be/nQNYv-NY-HQ"], collab: "STED.D", cover: "https://tekst-pesni.online/wp-content/uploads/2020/08/chtob.jpg" },
+                { type: "album", id: "pyro_tve", title: "ТЕРНОВЫЙ ВЕНЕЦ ЭВОЛЮЦИИ (2017)", ratings: [6, 5.8], links: ["https://youtu.be/j6IVX7Zx_Sw", "https://youtu.be/mgCxSPinyrY?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/b396008cb86c092ca9fc409ad9307863.1000x1000x1.png" },
+                { type: "album", id: "pyro_ff14", title: "FINAL FANTASY (2018-...)", ratings: [7.4], links: ["https://youtu.be/ubTbyXjkLw8"], collab: "", cover: "https://images.genius.com/18237a8f37d26adf219a9702a0eb281e.1000x1000x1.jpg" },
+                { type: "album", id: "pyro_kdpr", title: "Корми демонов по расписанию (2018)", ratings: [8.25, 8.4], links: ["https://youtu.be/JZi6oYlscEc", "https://youtu.be/Z8IQ4nmmoJE?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/1dd42cbd4a442b1236065ac0b22b0cda.1000x1000x1.png" },
+                { type: "album", id: "pyro_mmp", title: "МОЯ МИЛАЯ ПУСТОТА (2019)", ratings: [6.6], links: ["https://youtu.be/fjROc8Ef3UM"], collab: "", cover: "https://images.genius.com/6d07810c6711d66da4b7ac68e2c1da67.1000x1000x1.png" },
+                { type: "album", id: "pyro_pcnf", title: "Питер, чай, не Франция (2020)", ratings: [6.5, 7.1], links: ["https://youtu.be/h0D79fQfrzw", "https://youtu.be/KnLGgMUGsMQ?list=PLv08rxZyjRIpYz8RcU-wHCvDxFTf5MrGA"], collab: "", cover: "https://images.genius.com/835ea898013183c36b2a20d161bca86b.1000x1000x1.png" },
+                { type: "album", id: "pyro_gtm", title: "геометрия тьмы (2022)", ratings: [6.6], links: ["https://youtu.be/7ZUDT7xQdmg"], collab: "", cover: "https://images.genius.com/dc26a714bcbf0cf4cc9099d7b8154c0f.1000x1000x1.png" },
+                { type: "song", id: "pyro_herv", title: "Херувимы (2022)", ratings: [7], links: ["https://youtu.be/8OD_NfKitWg"], collab: "RAVANNA", cover: "https://s.mxmcdn.net/images-storage/albums2/8/2/4/6/0/7/62706428_350_350.jpg" },
+                { type: "album", id: "pyro_mmc", title: "mea maxima culpa (2025)", ratings: [7.4], links: ["https://youtu.be/rmMZLAfSr3g"], collab: "", cover: "https://images.genius.com/ebb5dc119cce603576dbfd5b89023d67.1000x1000x1.png" },
             ]
         },
         {
             artist: "Asper X",
-            songs: [
-                { id: "asper_drya", title: "DРЯНЬ (2022)", ratings: [8], links: ["https://youtu.be/KLo89wlcJv0"], collab: "", cover: "https://images.genius.com/5fe4d79341775508b457e1e800999f2d.1000x1000x1.jpg" },
-                { id: "asper_ksprs", title: "Каждый справляется сам (2022) (сингл)", ratings: [6], links: ["https://youtu.be/R3RLT1maDwo"], collab: "", cover: "https://images.genius.com/398af94461fd35a7feefd535d7bae5e3.1000x1000x1.jpg" },
-                { id: "asper_naul", title: "Надо улыбаться (2016)", ratings: [5], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://images.genius.com/b88c274e30145b2196013edb1e99f922.600x600x1.jpg" },
-                { id: "asper_smlu", title: "Смерть луны (2016)", ratings: [4], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://images.genius.com/b88c274e30145b2196013edb1e99f922.600x600x1.jpg" },
-                { id: "asper_bt", title: "Bad Trip (2019)", ratings: [9], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://cdn-image.zvuk.com/pic?hash=42e49009-33a7-4cf9-addf-0eafccb17f1d&id=24673315&size=large&type=release" },
-                { id: "asper_shram", title: "Шрам (2023)", ratings: [7], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://images.genius.com/dfd2961a49bb6778b50f54af1d4c9d6b.1000x1000x1.jpg" },
-                { id: "asper_vcdu", title: "Всё что должно умереть (2023)", ratings: [2], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://i.scdn.co/image/ab67616d0000b273ce98133d44d17fa361b3cfe7" },
-                { id: "asper_svb", title: "Сумасшедшим вход бесплатно (20)", ratings: [8], links: ["https://youtu.be/l8t4Hw3pgq8"], collab: "", cover: "https://images.genius.com/35fbdc316e366e02c4b55a0a8612c58a.1000x1000x1.png" },
-                { id: "asper_pust", title: "Пустота (2024)", ratings: [8], links: ["https://youtu.be/6cGrUX7cCT0"], collab: "Ctrl+Freak", cover: "https://cdn-images.dzcdn.net/images/cover/dd73eb6006b655cf0d878b05d636c439/0x1900-000000-80-0-0.jpg" },
-                { id: "asper_plug", title: "Plague (Чума) (2021)", ratings: [2], links: ["https://youtu.be/6cGrUX7cCT0"], collab: "Ctrl+Freak", cover: "https://cdn-image.zvuk.com/pic?hash=89ed9b42-29d2-482a-a9b3-c671644591d0&id=24719016&size=large&type=release" },
-                { id: "asper_kvde", title: "Квадрат Декарта (2024)", ratings: [6], links: ["https://youtu.be/DXjGxZEpkhw"], collab: "", cover: "https://cdn-images.dzcdn.net/images/cover/16fa9b6bbf1b4620beb723369c073da4/0x1900-000000-80-0-0.jpg" },
-                { id: "asper_ptsd", title: "ПТСР (2022)", ratings: [6], links: ["https://youtu.be/DXjGxZEpkhw"], collab: "Ctrl+Freak", cover: "https://cdn-images.dzcdn.net/images/cover/2d9793472dc7b12b13524a91c7986c94/0x1900-000000-80-0-0.jpg" },
-                { id: "asper_yars", title: "Я рассыпаю сахар (2022)", ratings: [3], links: ["https://youtu.be/A4u7tZ6Lq7A"], collab: "", cover: "https://images.genius.com/db20051fd95d63c9622a5ede262efcbe.1000x1000x1.jpg" },
-                { id: "asper_pv", title: "После вас (2021)", ratings: [8], links: ["https://youtu.be/PeDHCSgWka8"], collab: "Три Смычка", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/fc/f0/ff/fcf0ff44-bd1f-e77e-dda8-775a51da8fdb/cover.jpg/400x400bb.webp" },
-            ],
-            albums: [
-                { id: "asper_dtkm", title: "Для тех, кто молчит (2023)", ratings: [3.7], links: ["https://youtu.be/8Mso1I6ZFzo"], collab: "", cover: "https://images.genius.com/107c255034b8bd77ce2bda3ac07f4769.340x340x1.jpg" },
-                { id: "asper_kss", title: "Каждый справляется сам (2022)", ratings: [6], links: ["https://youtu.be/YzpknUVlWlI"], collab: "", cover: "https://images.genius.com/d94683baee8108e48c4ae8e97383e058.1000x1000x1.jpg" },
-                { id: "asper_przrp", title: "Прозерпина (2017)", ratings: [4.6], links: ["https://youtu.be/ur4OquHFwHA"], collab: "", cover: "https://images.genius.com/ae6fc0d6a30d2c868ecdb9f725dc3919.600x600x1.jpg" },
-                { id: "asper_asperx", title: "Asper X (2016)", ratings: [3.2], links: ["https://youtu.be/G7OtUmS434A"], collab: "", cover: "https://images.genius.com/b88c274e30145b2196013edb1e99f922.600x600x1.jpg" }
+            releases: [
+                { type: "song", id: "asper_naul", title: "Надо улыбаться (2016)", ratings: [5], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://images.genius.com/b88c274e30145b2196013edb1e99f922.600x600x1.jpg" },
+                { type: "song", id: "asper_smlu", title: "Смерть луны (2016)", ratings: [4], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://images.genius.com/b88c274e30145b2196013edb1e99f922.600x600x1.jpg" },
+                { type: "album", id: "asper_asperx", title: "Asper X (2016)", ratings: [3.2], links: ["https://youtu.be/G7OtUmS434A"], collab: "", cover: "https://images.genius.com/b88c274e30145b2196013edb1e99f922.600x600x1.jpg" },
+                { type: "album", id: "asper_przrp", title: "Прозерпина (2017)", ratings: [4.6], links: ["https://youtu.be/ur4OquHFwHA"], collab: "", cover: "https://images.genius.com/ae6fc0d6a30d2c868ecdb9f725dc3919.600x600x1.jpg" },
+                { type: "song", id: "asper_bt", title: "Bad Trip (2019)", ratings: [9], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://cdn-image.zvuk.com/pic?hash=42e49009-33a7-4cf9-addf-0eafccb17f1d&id=24673315&size=large&type=release" },
+                { type: "song", id: "asper_svb", title: "Сумасшедшим вход бесплатно (20)", ratings: [8], links: ["https://youtu.be/l8t4Hw3pgq8"], collab: "", cover: "https://images.genius.com/35fbdc316e366e02c4b55a0a8612c58a.1000x1000x1.png" },
+                { type: "song", id: "asper_plug", title: "Plague (Чума) (2021)", ratings: [2], links: ["https://youtu.be/6cGrUX7cCT0"], collab: "Ctrl+Freak", cover: "https://cdn-image.zvuk.com/pic?hash=89ed9b42-29d2-482a-a9b3-c671644591d0&id=24719016&size=large&type=release" },
+                { type: "song", id: "asper_pv", title: "После вас (2021)", ratings: [8], links: ["https://youtu.be/PeDHCSgWka8"], collab: "Три Смычка", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/fc/f0/ff/fcf0ff44-bd1f-e77e-dda8-775a51da8fdb/cover.jpg/400x400bb.webp" },
+                { type: "song", id: "asper_drya", title: "DРЯНЬ (2022)", ratings: [8], links: ["https://youtu.be/KLo89wlcJv0"], collab: "", cover: "https://images.genius.com/5fe4d79341775508b457e1e800999f2d.1000x1000x1.jpg" },
+                { type: "song", id: "asper_ksprs", title: "Каждый справляется сам (2022) (сингл)", ratings: [6], links: ["https://youtu.be/R3RLT1maDwo"], collab: "", cover: "https://images.genius.com/398af94461fd35a7feefd535d7bae5e3.1000x1000x1.jpg" },
+                { type: "album", id: "asper_kss", title: "Каждый справляется сам (2022)", ratings: [6], links: ["https://youtu.be/YzpknUVlWlI"], collab: "", cover: "https://images.genius.com/d94683baee8108e48c4ae8e97383e058.1000x1000x1.jpg" },
+                { type: "song", id: "asper_ptsd", title: "ПТСР (2022)", ratings: [6], links: ["https://youtu.be/2d9793472dc7b12b13524a91c7986c94"], collab: "Ctrl+Freak", cover: "https://cdn-images.dzcdn.net/images/cover/2d9793472dc7b12b13524a91c7986c94/0x1900-000000-80-0-0.jpg" },
+                { type: "song", id: "asper_yars", title: "Я рассыпаю сахар (2022)", ratings: [3], links: ["https://youtu.be/A4u7tZ6Lq7A"], collab: "", cover: "https://images.genius.com/db20051fd95d63c9622a5ede262efcbe.1000x1000x1.jpg" },
+                { type: "song", id: "asper_shram", title: "Шрам (2023)", ratings: [7], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://images.genius.com/dfd2961a49bb6778b50f54af1d4c9d6b.1000x1000x1.jpg" },
+                { type: "song", id: "asper_vcdu", title: "Всё что должно умереть (2023)", ratings: [2], links: ["https://youtu.be/DNImghbao5M"], collab: "", cover: "https://i.scdn.co/image/ab67616d0000b273ce98133d44d17fa361b3cfe7" },
+                { type: "album", id: "asper_dtkm", title: "Для тех, кто молчит (2023)", ratings: [3.7], links: ["https://youtu.be/8Mso1I6ZFzo"], collab: "", cover: "https://images.genius.com/107c255034b8bd77ce2bda3ac07f4769.340x340x1.jpg" },
+                { type: "song", id: "asper_pust", title: "Пустота (2024)", ratings: [8], links: ["https://youtu.be/6cGrUX7cCT0"], collab: "Ctrl+Freak", cover: "https://cdn-images.dzcdn.net/images/cover/dd73eb6006b655cf0d878b05d636c439/0x1900-000000-80-0-0.jpg" },
+                { type: "song", id: "asper_kvde", title: "Квадрат Декарта (2024)", ratings: [6], links: ["https://youtu.be/DXjGxZEpkhw"], collab: "", cover: "https://cdn-images.dzcdn.net/images/cover/16fa9b6bbf1b4620beb723369c073da4/0x1900-000000-80-0-0.jpg" },
             ]
         },
         {
             artist: "RetroElektro",
-            songs: [],
-            albums: [
-                { id: "retre_eva", title: "Ева (2014)", ratings: [5.8], links: ["https://youtu.be/vqt-zmXgty0"], collab: "", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/a8/4b/e0/a84be0b0-05a5-f249-8622-a04e5e3d3324/cover.jpg/375x375bb.webp" }
+            releases: [
+                { type: "album", id: "retre_eva", title: "Ева (2014)", ratings: [5.8], links: ["https://youtu.be/vqt-zmXgty0"], collab: "", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/a8/4b/e0/a84be0b0-05a5-f249-8622-a04e5e3d3324/cover.jpg/375x375bb.webp" }
             ]
         },
         {
             artist: "plagueinside",
-            songs: [],
-            albums: [
-                { id: "plagin_helh", title: "ХЕЛЬХЕЙМ (2023)", ratings: [8.2], links: ["https://youtu.be/QWivOV3ktyo"], collab: "", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e9/97/62/e997623e-2899-02bf-caf1-a3332c6a35a7/cover.jpg/3880x3880bb.webp" }
+            releases: [
+                { type: "album", id: "plagin_helh", title: "ХЕЛЬХЕЙМ (2023)", ratings: [8.2], links: ["https://youtu.be/QWivOV3ktyo"], collab: "", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/e9/97/62/e997623e-2899-02bf-caf1-a3332c6a35a7/cover.jpg/3880x3880bb.webp" }
             ]
         },
         {
             artist: "Lodoss",
-            songs: [],
-            albums: [
-                { id: "lodoss_lgs", title: "Легенды северных земель (2022)", ratings: [4.8], links: ["https://youtu.be/FyId3jDsNpc"], collab: "", cover: "https://images.genius.com/53f6d7a460607ee09cae46e98da3db10.1000x1000x1.jpg" },
-                { id: "lodoss_lgs2", title: "Легенды северных земель II (2025)", ratings: [6], links: ["https://youtu.be/aCDaCi0E4vs"], collab: "", cover: "https://images.genius.com/b4c954088fdbff62b1c2c148f2b6f5b3.1000x1000x1.jpg" },
-                { id: "lodoss_kultl", title: "Культ личности (2023)", ratings: [7], links: ["https://youtu.be/gI5hvYxFIA0"], collab: "", cover: "https://images.genius.com/a25335f76d02aeba85ded848c1d3b39c.1000x1000x1.jpg" },
-                { id: "lodoss_mabki", title: "МАЯКИБАКИ (2019)", ratings: [6.3], links: ["https://youtu.be/LszNEhcwwus"], collab: "", cover: "https://images.genius.com/b58c6d0bb99c47158f999c6446f55f6d.1000x1000x1.jpg" }
+            releases: [
+                { type: "album", id: "lodoss_mabki", title: "МАЯКИБАКИ (2019)", ratings: [6.3], links: ["https://youtu.be/LszNEhcwwus"], collab: "", cover: "https://images.genius.com/b58c6d0bb99c47158f999c6446f55f6d.1000x1000x1.jpg" },
+                { type: "album", id: "lodoss_lgs", title: "Легенды северных земель (2022)", ratings: [4.8], links: ["https://youtu.be/FyId3jDsNpc"], collab: "", cover: "https://images.genius.com/53f6d7a460607ee09cae46e98da3db10.1000x1000x1.jpg" },
+                { type: "album", id: "lodoss_kultl", title: "Культ личности (2023)", ratings: [7], links: ["https://youtu.be/gI5hvYxFIA0"], collab: "", cover: "https://images.genius.com/a25335f76d02aeba85ded848c1d3b39c.1000x1000x1.jpg" },
+                { type: "album", id: "lodoss_lgs2", title: "Легенды северных земель II (2025)", ratings: [6], links: ["https://youtu.be/aCDaCi0E4vs"], collab: "", cover: "https://images.genius.com/b4c954088fdbff62b1c2c148f2b6f5b3.1000x1000x1.jpg" },
             ]
         },
         {
             artist: "PollmixaN",
-            songs: [],
-            albums: [
-                { id: "poll_ssk", title: "Сам себе кумир (2020)", ratings: [4.7], links: ["https://youtu.be/owEflY6eK34"], collab: "", cover: "https://images.genius.com/87a901826f652e371ee197015e7f8040.500x500x1.jpg" },
-                { id: "poll_csr", title: "Центр своей реальности (2020)", ratings: [3.7], links: ["https://youtu.be/dzSCsqg8S2w"], collab: "", cover: "https://images.genius.com/711c23b0a9ad874e292f5d198e7ede82.500x500x1.jpg" },
-                { id: "poll_svmr", title: "Свет мрака (2021)", ratings: [4.9], links: ["https://youtu.be/Qp0zc0uYSUs"], collab: "", cover: "https://images.genius.com/f5f5ab4f4d0446b2815ce85ce8a7da57.1000x1000x1.jpg" },
-                { id: "poll_formst", title: "Формальности (2022)", ratings: [4.1], links: ["https://youtu.be/29Z9mFpIEdM"], collab: "", cover: "https://avatars.yandex.net/get-music-content/6201394/9b51191d.a.23529301-1/m1000x1000" },
-                { id: "poll_prutok", title: "Промежуток (2024)", ratings: [6.4], links: ["https://youtu.be/7LB7bzrZ35M"], collab: "", cover: "https://images.genius.com/c7c7938bca38faef2eb861ee8e6e21e2.1000x1000x1.jpg" },
-                { id: "poll_filek", title: "Фитилёк (2025)", ratings: [6.7], links: ["https://youtu.be/C8MmV9RfTdo"], collab: "", cover: "https://images.genius.com/c7b75cf85e9eddd9511a94bfccc7b55e.500x500x1.jpg" },
-                { id: "poll_pns", title: "Пауза - не стыдно (2023)", ratings: [7], links: ["https://youtu.be/Vj0yEJX30GY"], collab: "", cover: "https://cdn-images.dzcdn.net/images/cover/cf2fb184d87b7d3c59758793fe77202d/0x1900-000000-80-0-0.jpg" },
-                { id: "poll_wakeup", title: "Вставай (2026)", ratings: [6.7], links: ["https://youtu.be/O82owWnt6j0"], collab: "", cover: "https://images.genius.com/5bc1d37bde63d93159d4c0d02d561240.1000x1000x1.png" }
+            releases: [
+                { type: "album", id: "poll_ssk", title: "Сам себе кумир (2020)", ratings: [4.7], links: ["https://youtu.be/owEflY6eK34"], collab: "", cover: "https://images.genius.com/87a901826f652e371ee197015e7f8040.500x500x1.jpg" },
+                { type: "album", id: "poll_csr", title: "Центр своей реальности (2020)", ratings: [3.7], links: ["https://youtu.be/dzSCsqg8S2w"], collab: "", cover: "https://images.genius.com/711c23b0a9ad874e292f5d198e7ede82.500x500x1.jpg" },
+                { type: "album", id: "poll_svmr", title: "Свет мрака (2021)", ratings: [4.9], links: ["https://youtu.be/Qp0zc0uYSUs"], collab: "", cover: "https://images.genius.com/f5f5ab4f4d0446b2815ce85ce8a7da57.1000x1000x1.jpg" },
+                { type: "album", id: "poll_formst", title: "Формальности (2022)", ratings: [4.1], links: ["https://youtu.be/29Z9mFpIEdM"], collab: "", cover: "https://avatars.yandex.net/get-music-content/6201394/9b51191d.a.23529301-1/m1000x1000" },
+                { type: "album", id: "poll_pns", title: "Пауза - не стыдно (2023)", ratings: [7], links: ["https://youtu.be/Vj0yEJX30GY"], collab: "", cover: "https://cdn-images.dzcdn.net/images/cover/cf2fb184d87b7d3c59758793fe77202d/0x1900-000000-80-0-0.jpg" },
+                { type: "album", id: "poll_prutok", title: "Промежуток (2024)", ratings: [6.4], links: ["https://youtu.be/7LB7bzrZ35M"], collab: "", cover: "https://images.genius.com/c7c7938bca38faef2eb861ee8e6e21e2.1000x1000x1.jpg" },
+                { type: "album", id: "poll_filek", title: "Фитилёк (2025)", ratings: [6.7], links: ["https://youtu.be/C8MmV9RfTdo"], collab: "", cover: "https://images.genius.com/c7b75cf85e9eddd9511a94bfccc7b55e.500x500x1.jpg" },
+                { type: "album", id: "poll_wakeup", title: "Вставай (2026)", ratings: [6.7], links: ["https://youtu.be/O82owWnt6j0"], collab: "", cover: "https://images.genius.com/5bc1d37bde63d93159d4c0d02d561240.1000x1000x1.png" }
             ]
         },
         {
             artist: "mzlff",
-            songs: [],
-            albums: [
-                { id: "mzlff_phia", title: "PHANTASMAGORIA (2025)", ratings: [7.8], links: ["https://youtu.be/3zgsejQdYmU"], collab: "", cover: "https://images.genius.com/60f7a246fe79c4875a6fdee10b10a592.1000x1000x1.png" },
-                { id: "mzlff_dade", title: "светлая сторона (2024)", ratings: [6.7], links: ["https://youtu.be/4-KwStwq__k"], collab: "", cover: "https://images.genius.com/bcdb6d6fd2815340e491fe8bdd3f03ad.1000x1000x1.png" },
+            releases: [
+                { type: "album", id: "mzlff_dade", title: "светлая сторона (2024)", ratings: [6.7], links: ["https://youtu.be/4-KwStwq__k"], collab: "", cover: "https://images.genius.com/bcdb6d6fd2815340e491fe8bdd3f03ad.1000x1000x1.png" },
+                { type: "album", id: "mzlff_phia", title: "PHANTASMAGORIA (2025)", ratings: [7.8], links: ["https://youtu.be/3zgsejQdYmU"], collab: "", cover: "https://images.genius.com/60f7a246fe79c4875a6fdee10b10a592.1000x1000x1.png" },
             ]
         },
         {
             artist: "Гарри Топор",
-            songs: [],
-            albums: [
-                { id: "garry_chver", title: "Человек в ежовых рукавицах (2017)", ratings: [4.6], links: ["https://youtu.be/lnA7eCFN4sY"], collab: "", cover: "https://images.genius.com/c6b04d752a3aa684106ee6441529054f.1000x1000x1.jpg" },
-                { id: "garry_ls", title: "Лики смерти (2016)", ratings: [3.7], links: ["https://youtu.be/mS9lYUWOeAU"], collab: "", cover: "https://images.genius.com/541fedeca4c4264c40bea497a8b2e2cc.1000x1000x1.png" },
-                { id: "garry_lm2", title: "LOS MUERTOS 2 (2026)", ratings: [4.9], links: ["https://youtu.be/2PcuUYsDmCQ"], collab: "", cover: "https://cdn-image.zvuk.com/pic?hash=56bb5a16-e995-4dd6-a716-321d4b85894f&id=48141413&size=large&type=release" },
-                { id: "garry_at", title: "Анатомический театр (2013)", ratings: [3.6], links: ["https://youtu.be/Tb_ifgtXhHE"], collab: "", cover: "https://avatars.yandex.net/get-music-content/16464214/4003ab32.a.4461970-2/m1000x1000" },
-                { id: "garry_vm", title: "Враг мой (2009)", ratings: [1], links: ["https://youtu.be/CNjzdTxesBI"], collab: "", cover: "https://images.genius.com/c0d1699d2c123921565b17d80671f3c1.450x450x1.jpg" },
+            releases: [
+                { type: "album", id: "garry_vm", title: "Враг мой (2009)", ratings: [1], links: ["https://youtu.be/CNjzdTxesBI"], collab: "", cover: "https://images.genius.com/c0d1699d2c123921565b17d80671f3c1.450x450x1.jpg" },
+                { type: "album", id: "garry_at", title: "Анатомический театр (2013)", ratings: [3.6], links: ["https://youtu.be/Tb_ifgtXhHE"], collab: "", cover: "https://avatars.yandex.net/get-music-content/16464214/4003ab32.a.4461970-2/m1000x1000" },
+                { type: "album", id: "garry_ls", title: "Лики смерти (2016)", ratings: [3.7], links: ["https://youtu.be/mS9lYUWOeAU"], collab: "", cover: "https://images.genius.com/541fedeca4c4264c40bea497a8b2e2cc.1000x1000x1.png" },
+                { type: "album", id: "garry_chver", title: "Человек в ежовых рукавицах (2017)", ratings: [4.6], links: ["https://youtu.be/lnA7eCFN4sY"], collab: "", cover: "https://images.genius.com/c6b04d752a3aa684106ee6441529054f.1000x1000x1.jpg" },
+                { type: "album", id: "garry_lm2", title: "LOS MUERTOS 2 (2026)", ratings: [4.9], links: ["https://youtu.be/2PcuUYsDmCQ"], collab: "", cover: "https://cdn-image.zvuk.com/pic?hash=56bb5a16-e995-4dd6-a716-321d4b85894f&id=48141413&size=large&type=release" },
             ]
         },
         {
             artist: "ATL",
-            songs: [],
-            albums: [
-                { id: "atl_ra", title: "Радио Апокалипсис (2021)", ratings: [4.3], links: ["https://youtu.be/-K2R31JtdBY"], collab: "", cover: "https://images.genius.com/253f754d477ba6e7bc07548b72e24d27.1000x1000x1.png" },
-                { id: "atl_limb", title: "Лимб (2017)", ratings: [4.8], links: ["https://youtu.be/YOYMsDkRExQ"], collab: "", cover: "https://images.genius.com/b1ccc467fb20d6af0d3055789419134f.1000x1000x1.png" },
+            releases: [
+                { type: "album", id: "atl_limb", title: "Лимб (2017)", ratings: [4.8], links: ["https://youtu.be/YOYMsDkRExQ"], collab: "", cover: "https://images.genius.com/b1ccc467fb20d6af0d3055789419134f.1000x1000x1.png" },
+                { type: "album", id: "atl_ra", title: "Радио Апокалипсис (2021)", ratings: [4.3], links: ["https://youtu.be/-K2R31JtdBY"], collab: "", cover: "https://images.genius.com/253f754d477ba6e7bc07548b72e24d27.1000x1000x1.png" },
             ]
         }
     ];
@@ -329,15 +314,14 @@
         let seenIds = new Set();
 
         data.forEach(art => {
-            const all = [...art.albums.map(a => ({...a, type:'album'})), ...art.songs.map(s => ({...s, type:'song'}))];
-            all.forEach(item => {
-                if (!seenIds.has(item.id)) {
-                    // Проверяем тип для фильтров песен/альбомов
-                    if (currentFilter.includes('song') && item.type !== 'song') return;
-                    if (currentFilter.includes('album') && item.type !== 'album') return;
+            art.releases.forEach(rel => {
+                if (!seenIds.has(rel.id)) {
+                    // Фильтруем по типу (альбом или сингл)
+                    if (currentFilter.includes('song') && rel.type !== 'song') return;
+                    if (currentFilter.includes('album') && rel.type !== 'album') return;
                     
-                    items.push({...item, mainArtist: art.artist});
-                    seenIds.add(item.id);
+                    items.push({...rel, mainArtist: art.artist});
+                    seenIds.add(rel.id);
                 }
             });
         });
@@ -348,9 +332,10 @@
             (a.collab && a.collab.toLowerCase().includes(query))
         );
 
+        // СОРТИРОВКА
         if (currentFilter.includes('best')) filtered.sort((a,b) => b.ratings.at(-1) - a.ratings.at(-1));
         else if (currentFilter.includes('worst')) filtered.sort((a,b) => a.ratings.at(-1) - b.ratings.at(-1));
-        else if (currentFilter === 'latest') filtered.reverse();
+        else if (currentFilter === 'latest') filtered.reverse(); // Последние добавленные в 'data' будут первыми
 
         filtered.forEach((alb, index) => {
             const div = document.createElement('div');
@@ -384,80 +369,54 @@
     }
 
     function renderArtists(container, query) {
-        let stats = data.map(art => {
-            const name = art.artist;
-            // Ищем все работы, где этот артист либо главный, либо в коллабе
-            let worksForArtist = [];
-            let seenInArtist = new Set();
-
-            data.forEach(d => {
-                const all = [...d.albums, ...d.songs];
-                all.forEach(w => {
-                    const collabList = w.collab ? w.collab.split(/ x |,/ ).map(s => s.trim()) : [];
-                    if ((d.artist === name || collabList.includes(name)) && !seenInArtist.has(w.id)) {
-                        worksForArtist.push(w);
-                        seenInArtist.add(w.id);
-                    }
-                });
-            });
-
-            let sum = worksForArtist.reduce((acc, work) => acc + work.ratings.at(-1), 0);
-            return { 
-                name: name, 
-                avg: (worksForArtist.length ? (sum / worksForArtist.length).toFixed(2) : 0),
-                works: worksForArtist.sort((a,b) => b.ratings.at(-1) - a.ratings.at(-1))
+        const sortedArtists = [...data].sort((a, b) => {
+            const getAvg = (art) => {
+                const allR = art.releases.flatMap(r => r.ratings);
+                return allR.length ? allR.reduce((s,v)=>s+v,0)/allR.length : 0;
             };
-        })
-        .filter(s => s.name.toLowerCase().includes(query))
-        .sort((a,b) => b.avg - a.avg);
+            return getAvg(b) - getAvg(a);
+        });
 
-        stats.forEach((s, index) => {
-            const div = document.createElement('div');
-            div.className = 'album-card artist-card';
-            div.style.animationDelay = `${index * 0.05}s`;
-            div.onclick = () => toggleArtistWorks(s.name);
+        sortedArtists.forEach(art => {
+            if (!art.artist.toLowerCase().includes(query)) return;
+            const allR = art.releases.flatMap(r => r.ratings);
+            const avg = allR.length ? (allR.reduce((s,v)=>s+v,0)/allR.length).toFixed(2) : 0;
             
-            let worksHtml = s.works.map(w => `
-                <div class="work-item">
-                    <span>${w.title}</span>
-                    <span class="work-score">${w.ratings.at(-1)}</span>
-                </div>
-            `).join('');
-
+            const div = document.createElement('div');
+            div.className = 'artist-card';
             div.innerHTML = `
-                <div style="display:flex; justify-content:space-between; width:100%; align-items:center;">
-                    <span style="font-size:1.5rem">${s.name}</span>
-                    <span style="color:var(--gold); font-size:1.5rem">AVG: ${s.avg}</span>
+                <div style="display:flex; justify-content:space-between; align-items:center" onclick="toggleArtistWorks('${art.artist.replace(/'/g, "\\'")}')">
+                    <span style="font-size:1.5rem; font-weight:900">${art.artist}</span>
+                    <span style="color:var(--gold); font-size:1.5rem">★ ${avg}</span>
                 </div>
-                <div id="works-${s.name.replace(/\s/g, '')}" class="artist-works-list">
-                    ${worksHtml}
+                <div id="artist-works-${art.artist}" class="artist-works-list">
+                    ${art.releases.map(r => `
+                        <div class="work-item">
+                            <span>${r.title}</span>
+                            <span class="work-score">${r.ratings.at(-1)}</span>
+                        </div>
+                    `).join('')}
                 </div>
             `;
             container.appendChild(div);
         });
     }
 
-    function toggleArtistWorks(name) {
-        const id = `works-${name.replace(/\s/g, '')}`;
-        const el = document.getElementById(id);
-        el.style.display = el.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function toggleDrawer(id, index) {
+    function toggleDrawer(id, idx) {
         const drawer = document.getElementById(`drawer-${id}`);
-        let foundItem = null;
-        data.forEach(art => {
-            const item = [...art.albums, ...art.songs].find(i => i.id === id);
-            if (item) foundItem = item;
-        });
-        
-        if (drawer.style.display === 'block' && drawer.dataset.idx == index) {
+        const allReleases = data.flatMap(a => a.releases);
+        const rel = allReleases.find(r => r.id === id);
+        if (drawer.style.display === 'block') {
             drawer.style.display = 'none';
         } else {
-            drawer.innerHTML = `🔗 <a href="${foundItem.links[index]}" target="_blank">РЕАКЦИЯ НА ${foundItem.ratings[index]}</a>`;
             drawer.style.display = 'block';
-            drawer.dataset.idx = index;
+            drawer.innerHTML = `<a href="${rel.links[idx] || rel.links[0]}" target="_blank">СЛУШАТЬ / СМОТРЕТЬ</a>`;
         }
+    }
+
+    function toggleArtistWorks(name) {
+        const list = document.getElementById(`artist-works-${name}`);
+        list.style.display = list.style.display === 'block' ? 'none' : 'block';
     }
 
     function toggleCalc() {
@@ -466,14 +425,17 @@
     }
 
     function runCalc() {
-        const val = document.getElementById('median-input').value.split(/\s+/).map(Number).filter(n => !isNaN(n)).sort((a,b)=>a-b);
-        if(!val.length) return;
-        const mid = Math.floor(val.length/2);
-        const res = val.length % 2 !== 0 ? val[mid] : (val[mid-1]+val[mid])/2;
-        document.getElementById('median-res').innerText = "Медиана: " + res.toFixed(2);
+        const val = document.getElementById('median-input').value;
+        const nums = val.split(/[\s,]+/).map(Number).filter(n => !isNaN(n)).sort((a,b) => a-b);
+        if (!nums.length) return;
+        const mid = Math.floor(nums.length / 2);
+        const res = nums.length % 2 !== 0 ? nums[mid] : ((nums[mid-1] + nums[mid]) / 2).toFixed(2);
+        document.getElementById('median-res').innerText = `Медиана: ${res}`;
     }
 
+    // Первый запуск
     render();
 </script>
+
 </body>
 </html>
