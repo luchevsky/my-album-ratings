@@ -147,7 +147,7 @@
             artist: "Лжедмитрий IV",
             songs: [
                 { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" },
-                { id: "lzhe_prn", title: "Призраки настоящего (2026)", ratings: [6], links: ["https://youtu.be/p10MYKhC-hg?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: ["DEEP-EX-SENSE", "ТЕППО"], cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b8/58/e2/b858e2af-73d2-96f1-0583-c7e68ed35801/0.jpg/800x800cc.jpg" },
+                { id: "lzhe_prn", title: "Призраки настоящего (2026)", ratings: [6], links: ["https://youtu.be/p10MYKhC-hg?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "DEEP-EX-SENSE x ТЕППО", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/b8/58/e2/b858e2af-73d2-96f1-0583-c7e68ed35801/0.jpg/800x800cc.jpg" },
                 { id: "lzhe_krbr", title: "Кровный брат (2020)", ratings: [10], links: ["https://youtu.be/XFwQ77hOsUk?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "ТЕППО", cover: "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/32/e1/c5/32e1c5cd-b9c8-b9fa-d2da-5ce4f73590fc/cover.jpg/600x600bf-60.jpg" },
                 { id: "lzhe_satn", title: "Сатанизм (2020)", ratings: [5], links: ["https://youtu.be/i7lxYSMyt94?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "Lawanda x Ра-Мир", cover: "https://sun9-54.userapi.com/s/v1/ig2/67ehL_p0vuc-6YJqhmCoDyjyFsn__L69b87jqTZX8SrfYcpGs-c0kOOhZF3pXMUbVHIbD7tmZxHfPPYSdCnBfbGg.jpg?quality=96&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640,720x720,1080x1080&from=bu&cs=640x0" },
             ], 
@@ -162,7 +162,7 @@
         {
             artist: "DEEP-EX-SENSE",
             songs: [
-                { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" },
+                { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "Лжедмитрий IV", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" },
             ],
             albums: [
                 { id: "deep_shog", title: "ШОГГОТ (2018)", ratings: [6.3], links: ["https://youtu.be/9DRxhgm9bdg?list=PLv08rxZyjRIogv4AJ-JSEYLkzdvLK7Xic"], collab: "", cover: "https://images.genius.com/ba90686599f583e250ee4a15fc974ccb.518x518x1.jpg" },
@@ -293,23 +293,31 @@
         }
 
         let items = [];
-        // ЛОГИКА ДЛЯ ФИЛЬТРА "ПОСЛЕДНИЕ": Собираем всё вместе
-        if (currentFilter === 'latest') {
-            data.forEach(art => {
-                art.albums.forEach(alb => items.push({...alb, mainArtist: art.artist, type: 'album'}));
-                art.songs.forEach(s => items.push({...s, mainArtist: art.artist, type: 'song'}));
-            });
-        } else if (currentFilter.includes('song')) {
-            data.forEach(art => art.songs.forEach(s => items.push({...s, mainArtist: art.artist, type: 'song'})));
-        } else {
-            data.forEach(art => art.albums.forEach(alb => items.push({...alb, mainArtist: art.artist, type: 'album'})));
-        }
+        let seenIds = new Set();
 
-        let filtered = items.filter(a => a.mainArtist.toLowerCase().includes(query) || a.title.toLowerCase().includes(query));
+        data.forEach(art => {
+            const all = [...art.albums.map(a => ({...a, type:'album'})), ...art.songs.map(s => ({...s, type:'song'}))];
+            all.forEach(item => {
+                if (!seenIds.has(item.id)) {
+                    // Проверяем тип для фильтров песен/альбомов
+                    if (currentFilter.includes('song') && item.type !== 'song') return;
+                    if (currentFilter.includes('album') && item.type !== 'album') return;
+                    
+                    items.push({...item, mainArtist: art.artist});
+                    seenIds.add(item.id);
+                }
+            });
+        });
+
+        let filtered = items.filter(a => 
+            a.mainArtist.toLowerCase().includes(query) || 
+            a.title.toLowerCase().includes(query) || 
+            (a.collab && a.collab.toLowerCase().includes(query))
+        );
 
         if (currentFilter.includes('best')) filtered.sort((a,b) => b.ratings.at(-1) - a.ratings.at(-1));
-        if (currentFilter.includes('worst')) filtered.sort((a,b) => a.ratings.at(-1) - b.ratings.at(-1));
-        if (currentFilter === 'latest') filtered.reverse();
+        else if (currentFilter.includes('worst')) filtered.sort((a,b) => a.ratings.at(-1) - b.ratings.at(-1));
+        else if (currentFilter === 'latest') filtered.reverse();
 
         filtered.forEach((alb, index) => {
             const div = document.createElement('div');
@@ -323,7 +331,7 @@
                     <div class="rating-wrapper">
                         <button class="rating-badge ${isLast ? '' : 'old'}" 
                                 style="background:${rColor.c}" 
-                                onclick="toggleDrawer('${alb.id}', ${i}, '${alb.type}')">${r}</button>
+                                onclick="toggleDrawer('${alb.id}', ${i})">${r}</button>
                         ${rColor.i ? `<span class="status-icon">${rColor.i}</span>` : ''}
                     </div>
                 `;
@@ -344,12 +352,27 @@
 
     function renderArtists(container, query) {
         let stats = data.map(art => {
-            const allWorks = [...(art.albums || []), ...(art.songs || [])];
-            let sum = allWorks.reduce((acc, work) => acc + work.ratings.at(-1), 0);
+            const name = art.artist;
+            // Ищем все работы, где этот артист либо главный, либо в коллабе
+            let worksForArtist = [];
+            let seenInArtist = new Set();
+
+            data.forEach(d => {
+                const all = [...d.albums, ...d.songs];
+                all.forEach(w => {
+                    const collabList = w.collab ? w.collab.split(/ x |,/ ).map(s => s.trim()) : [];
+                    if ((d.artist === name || collabList.includes(name)) && !seenInArtist.has(w.id)) {
+                        worksForArtist.push(w);
+                        seenInArtist.add(w.id);
+                    }
+                });
+            });
+
+            let sum = worksForArtist.reduce((acc, work) => acc + work.ratings.at(-1), 0);
             return { 
-                name: art.artist, 
-                avg: (allWorks.length ? (sum / allWorks.length).toFixed(2) : 0),
-                works: allWorks.sort((a,b) => b.ratings.at(-1) - a.ratings.at(-1))
+                name: name, 
+                avg: (worksForArtist.length ? (sum / worksForArtist.length).toFixed(2) : 0),
+                works: worksForArtist.sort((a,b) => b.ratings.at(-1) - a.ratings.at(-1))
             };
         })
         .filter(s => s.name.toLowerCase().includes(query))
@@ -387,19 +410,18 @@
         el.style.display = el.style.display === 'block' ? 'none' : 'block';
     }
 
-    function toggleDrawer(id, index, type) {
+    function toggleDrawer(id, index) {
         const drawer = document.getElementById(`drawer-${id}`);
-        let allItems = [];
+        let foundItem = null;
         data.forEach(art => {
-            art.albums.forEach(a => allItems.push({...a, type:'album'}));
-            art.songs.forEach(s => allItems.push({...s, type:'song'}));
+            const item = [...art.albums, ...art.songs].find(i => i.id === id);
+            if (item) foundItem = item;
         });
-        const item = allItems.find(a => a.id === id);
         
         if (drawer.style.display === 'block' && drawer.dataset.idx == index) {
             drawer.style.display = 'none';
         } else {
-            drawer.innerHTML = `🔗 <a href="${item.links[index]}" target="_blank">РЕАКЦИЯ НА ${item.ratings[index]}</a>`;
+            drawer.innerHTML = `🔗 <a href="${foundItem.links[index]}" target="_blank">РЕАКЦИЯ НА ${foundItem.ratings[index]}</a>`;
             drawer.style.display = 'block';
             drawer.dataset.idx = index;
         }
