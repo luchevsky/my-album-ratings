@@ -53,7 +53,6 @@
         }
         .album-card:hover { border-color: #444; transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
 
-        /* Стиль для кликабельной карточки артиста */
         .artist-card { cursor: pointer; flex-direction: column; }
 
         .album-cover { width: 120px; height: 120px; border-radius: 6px; object-fit: cover; background: #000; }
@@ -62,13 +61,17 @@
         .album-title { font-size: 1.4rem; font-weight: 900; margin-bottom: 12px; line-height: 1.2; }
 
         .rating-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .rating-wrapper { position: relative; display: inline-block; }
         .rating-badge {
             padding: 6px 14px; border-radius: 4px; font-weight: 900; font-size: 1.1rem;
             cursor: pointer; transition: 0.2s; border: none; color: #fff;
         }
         .rating-badge.old { opacity: 0.25; filter: grayscale(0.5); font-size: 0.9rem; }
         
-        .status-icon { position: absolute; top: -14px; right: -10px; font-size: 1.4rem; pointer-events: none; }
+        .status-icon { 
+            position: absolute; top: -14px; right: -10px; font-size: 1.4rem; 
+            pointer-events: none; z-index: 10;
+        }
 
         .link-drawer { 
             display: none; margin-top: 15px; padding: 12px; background: #000; 
@@ -76,7 +79,6 @@
         }
         .link-drawer a { color: var(--gold); text-decoration: none; font-weight: 900; }
 
-        /* Окно со списком работ артиста */
         .artist-works-list {
             display: none; width: 100%; margin-top: 15px; padding-top: 15px; border-top: 1px solid #333;
         }
@@ -144,8 +146,7 @@
         {
             artist: "Лжедмитрий IV",
             songs: [
-                { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" },
-                
+                { id: "lzhe_csl", title: "Что скрывает лес (2025)", ratings: [10], links: ["https://youtu.be/XZ2A3DBagts?list=PLv08rxZyjRIpbrqVd1I3fE_8sOHQQghdP"], collab: "DEEP-EX-SENSE", cover: "https://cdn-images.dzcdn.net/images/cover/5a82e4b038b567451d6ae85519f40af6/0x1900-000000-80-0-0.jpg" }
             ], 
             albums: [
                 { id: "lzhe_iov", title: "Иов (2016)", ratings: [4.7, 5.4, 6.4, 7.1], links: ["https://youtu.be/bD1DmvT61pY", "https://youtu.be/2LFURC3vSRM?list=PLv08rxZyjRIp-vCIBdI0PDjpd0WZTJHJQ", "https://youtu.be/7TFSt7k1q2k?list=PLv08rxZyjRIp-vCIBdI0PDjpd0WZTJHJQ", "https://youtu.be/jUkKxTrzzgw?list=PLv08rxZyjRIp-vCIBdI0PDjpd0WZTJHJQ"], collab: "", cover: "https://avatars.yandex.net/get-music-content/15682289/a0ffe948.a.18050595-2/m1000x1000" },
@@ -287,7 +288,13 @@
         }
 
         let items = [];
-        if (currentFilter.includes('song')) {
+        // ЛОГИКА ДЛЯ ФИЛЬТРА "ПОСЛЕДНИЕ": Собираем всё вместе
+        if (currentFilter === 'latest') {
+            data.forEach(art => {
+                art.albums.forEach(alb => items.push({...alb, mainArtist: art.artist, type: 'album'}));
+                art.songs.forEach(s => items.push({...s, mainArtist: art.artist, type: 'song'}));
+            });
+        } else if (currentFilter.includes('song')) {
             data.forEach(art => art.songs.forEach(s => items.push({...s, mainArtist: art.artist, type: 'song'})));
         } else {
             data.forEach(art => art.albums.forEach(alb => items.push({...alb, mainArtist: art.artist, type: 'album'})));
@@ -312,7 +319,7 @@
                         <button class="rating-badge ${isLast ? '' : 'old'}" 
                                 style="background:${rColor.c}" 
                                 onclick="toggleDrawer('${alb.id}', ${i}, '${alb.type}')">${r}</button>
-                        ${isLast && rColor.i ? `<span class="status-icon">${rColor.i}</span>` : ''}
+                        ${rColor.i ? `<span class="status-icon">${rColor.i}</span>` : ''}
                     </div>
                 `;
             }).join('');
